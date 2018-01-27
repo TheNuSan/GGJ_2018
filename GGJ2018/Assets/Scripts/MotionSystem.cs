@@ -213,7 +213,7 @@ public class MotionSystem : MonoBehaviour {
     }
 
     public bool MoveCharacterAlongDirection(string CharName, string DirName) {
-        Debug.Log("Try move " + CharName + " to " + DirName);
+        //Debug.Log("Try move " + CharName + " to " + DirName);
         Character Char = GetCharacter(CharName);
         MotionDirection Dir = GetDirection(DirName);
         if(!Char || Dir == MotionDirection.Invalid) {
