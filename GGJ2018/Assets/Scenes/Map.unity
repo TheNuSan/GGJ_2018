@@ -176,6 +176,10 @@ Prefab:
       propertyPath: m_Color.b
       value: 0.033304505
       objectReference: {fileID: 0}
+    - target: {fileID: 1744315523948314, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_TagString
+      value: Character
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
   m_IsPrefabParent: 0
@@ -241,6 +245,10 @@ Prefab:
         type: 2}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1744315523948314, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_TagString
+      value: Character
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
@@ -386,7 +394,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -431,12 +439,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &547889410 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114552841976024260, guid: 8c50a570a1328364ca1c662232f1c8bc,
-    type: 2}
-  m_PrefabInternal: {fileID: 1620366484}
-  m_Script: {fileID: 11500000, guid: e1e1540e0beda8744affa467c2149d95, type: 3}
 --- !u!1 &659675650
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,11 +499,7 @@ MonoBehaviour:
   RoomPrefab: {fileID: 1126218404706282, guid: d525b3ffdc043ab4cb5ae4bfeef12556, type: 2}
   MapOffset: {x: -3, y: -3, z: 0}
   RoomOffset: {x: 2.1, y: 2.1, z: 0}
-  AllCharacters:
-  - {fileID: 547889410}
-  - {fileID: 2097874273}
-  - {fileID: 1843707649}
-  - {fileID: 1324039100}
+  CharacHeight: {x: 0, y: 0, z: -1}
   StartingRoom: {fileID: 0}
   EndingRoom: {fileID: 0}
 --- !u!1 &1057927621
@@ -684,12 +682,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1324039100 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114552841976024260, guid: 8c50a570a1328364ca1c662232f1c8bc,
-    type: 2}
-  m_PrefabInternal: {fileID: 1831180382}
-  m_Script: {fileID: 11500000, guid: e1e1540e0beda8744affa467c2149d95, type: 3}
 --- !u!4 &1434577812 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc,
@@ -947,6 +939,10 @@ Prefab:
       propertyPath: m_Color.b
       value: 0.3277987
       objectReference: {fileID: 0}
+    - target: {fileID: 1744315523948314, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_TagString
+      value: Character
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
   m_IsPrefabParent: 0
@@ -1013,15 +1009,13 @@ Prefab:
       propertyPath: m_Color.b
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1744315523948314, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_TagString
+      value: Character
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &1843707649 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114552841976024260, guid: 8c50a570a1328364ca1c662232f1c8bc,
-    type: 2}
-  m_PrefabInternal: {fileID: 5968635}
-  m_Script: {fileID: 11500000, guid: e1e1540e0beda8744affa467c2149d95, type: 3}
 --- !u!1 &1930873088
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,9 +1235,3 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2048205293}
---- !u!114 &2097874273 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114552841976024260, guid: 8c50a570a1328364ca1c662232f1c8bc,
-    type: 2}
-  m_PrefabInternal: {fileID: 103300560}
-  m_Script: {fileID: 11500000, guid: e1e1540e0beda8744affa467c2149d95, type: 3}

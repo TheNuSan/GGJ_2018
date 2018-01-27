@@ -1,18 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public enum MotionDirection { North, East, South, West, Invalid };
 
 public class MotionSystem : MonoBehaviour {
 
     public GameObject RoomPrefab;
     public Vector3 MapOffset = new Vector3(-3.0f, -3.0f, 0.0f);
     public Vector3 RoomOffset = new Vector3(2.1f, 2.1f, 0.0f);
+    public Vector3 CharacHeight = new Vector3(0.0f, 0.0f, -1.0f);
 
     int LevelSizeX = 4;
     int LevelSizeY = 4;
     
-    public List<Character> AllCharacters;
-
     List<Character> Characters;
     List<List<BasicRoom>> Rooms;
 
@@ -32,8 +34,21 @@ public class MotionSystem : MonoBehaviour {
         LevelSizeY = 4;
 
         Characters = new List<Character>();
-        for (int i=0; i<AllCharacters.Count; ++i) {
-            Characters.Add(AllCharacters[i]);
+        GameObject[] CharacList = GameObject.FindGameObjectsWithTag("Character");
+        for(int i=0; i<CharacList.Length; ++i) {
+            Character Char = CharacList[i].GetComponent<Character>();
+            if (Char) {
+                Char.Number = i;
+                Characters.Add(Char);
+            }
+        }
+
+        // update slot position
+        for(int i=0; i<Characters.Count; ++i) {
+            Character Char = Characters[i];
+            float Dist = 0.5f;
+            float Alpha = Char.Number * Mathf.PI * 2.0f / (float)Characters.Count;
+            Char.SlotPosition = new Vector3(Mathf.Cos(Alpha) * Dist, Mathf.Sin(Alpha) * Dist, 0.0f);
         }
 
         Rooms = new List<List<BasicRoom>>();
@@ -60,24 +75,89 @@ public class MotionSystem : MonoBehaviour {
             PlaceCharacter(Characters[i], StartingRoom);
         }
 
+        MoveCharacterAlongDirection("Elf", "East");
+    }
+
+    public Character GetCharacter(string CharName) {
+        for (int i = 0; i < Characters.Count; ++i) {
+            Character Char = Characters[i];
+            if(Char.name == CharName) {
+                return Char;
+            }
+        }
+        return null;
+    }
+
+    public MotionDirection GetDirection(string DirName) {
+        foreach (MotionDirection Dir in Enum.GetValues(typeof(MotionDirection))) {
+            if (Enum.GetName(typeof(MotionDirection), Dir) == DirName) {
+                return Dir;
+            }
+        }
+        return MotionDirection.Invalid;
+    }
+
+    public bool MoveCharacterAlongDirection(string CharName, string DirName) {
+        Character Char = GetCharacter(CharName);
+        MotionDirection Dir = GetDirection(DirName);
+        if(!Char || Dir == MotionDirection.Invalid) {
+            return false;
+        }
+        return MoveCharacterAlongDirection(Char, Dir);
+    }
+
+    public bool MoveCharacterAlongDirection(Character Char, MotionDirection Dir) {
+
+        int OffsetX = 0;
+        int OffsetY = 0;
+        switch(Dir) {
+            case MotionDirection.North: OffsetY = 1; break;
+            case MotionDirection.South: OffsetY = -1; break;
+            case MotionDirection.East: OffsetX = 1; break;
+            case MotionDirection.West: OffsetX = -1; break;
+            case MotionDirection.Invalid: return false; break;
+        }
+
+        BasicRoom Room = Char.CurrentRoom;
+        int NewCaseX = Room.PosX + OffsetX;
+        int NewCaseY = Room.PosY + OffsetY;
+
+        if(NewCaseX<0 || NewCaseX>=LevelSizeX || NewCaseY<0 || NewCaseY>=LevelSizeY) {
+            return false;
+        }
+
+        BasicRoom OtherRoom = Rooms[NewCaseX][NewCaseY];
+        PlaceCharacter(Char, OtherRoom);
+
+        return true;
     }
 
     void PlaceCharacter(Character Char, BasicRoom Room) {
 
+        BasicRoom OldRoom = Char.CurrentRoom;
         if(Char.CurrentRoom) {
             Char.CurrentRoom.CharacterExit(Char);
         }
 
         if(Room) {
-
+            Char.CurrentRoom = Room;
             Room.CharacterEnter(Char);
 
         } else {
+            Char.CurrentRoom = null;
             Debug.LogError("Missing room while placing " + Char.name);
         }
 
-        
-
+        //Char.transform.position = Room.transform.position + Char.SlotPosition + CharacHeight;
+        List<Vector3> Path = new List<Vector3>();
+        if(OldRoom) Path.Add(OldRoom.GetCenterPosition() + CharacHeight);
+        if (Char.CurrentRoom) {
+            Path.Add(Room.GetCenterPosition() + CharacHeight);
+            Path.Add(Char.CurrentRoom.GetCenterPosition() + CharacHeight);
+            Path.Add(Char.CurrentRoom.GetCenterPosition() + Char.SlotPosition + CharacHeight);
+        }
+        Char.FinishMotion();
+        Char.AddMotion(Path);
     }
 	
 	// Update is called once per frame
