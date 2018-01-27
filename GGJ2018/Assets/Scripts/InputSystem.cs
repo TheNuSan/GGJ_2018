@@ -35,7 +35,7 @@ public class InputSystem : MonoBehaviour {
             return;
         }
 
-
+        myInterpret.DoInterpret(words);
     }
 
     

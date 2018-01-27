@@ -5,6 +5,12 @@ using UnityEngine;
 public class Interpret : MonoBehaviour {
 
     public static int MinWords = 3;
+    enum wordType {
+        UNKOWN,
+        VERB,
+        PERSON,
+        THING
+    };
 
     public List<string> Verbs;
     public List<string> People;
@@ -15,6 +21,8 @@ public class Interpret : MonoBehaviour {
     List<string> VerbsBase = new List<string>();
     List<string> PeopleBase = new List<string>();
     List<string> ThingsBase = new List<string>();
+
+    List<List<string>> dictionary = new List<List<string>>();
 
     public InterpretError MyInterpretError;
 
@@ -60,26 +68,99 @@ public class Interpret : MonoBehaviour {
 		
 	}
 
-    public void DoInterpret()
+    public void DoInterpret(string[] words)
     {
+        int i;
+        int nb_verbs = 0;
+        int nb_people = 0;
+        int nb_things = 0;
+        bool syntax_error = false;
+
+        wordType [] wordtype = new wordType[MinWords];
+        List<string> translated_words = new List<string>();
+        int translated_index = -1;
         // get the sentence from the base
 
+        for (i = 0; i < MinWords; i++) {
+            wordtype[i] = (wordType)findword(words[i].ToLower(), out translated_index);
+            
+            switch (wordtype[i]) {
+                case wordType.VERB:
+                    nb_verbs++;
+                    translated_words.Add(VerbsBase[translated_index]);
+                    break;
 
+                case wordType.PERSON:
+                    nb_people++;
+                    translated_words.Add(PeopleBase[translated_index]);
+                    break;
+
+                case wordType.THING:
+                    nb_things++;
+                    translated_words.Add(ThingsBase[translated_index]);
+                    break;
+
+                case wordType.UNKOWN:
+                default:
+                    // syntax error
+                    MyInterpretError.SyntaxError(words[i]);
+                    syntax_error = true;
+                    break;
+            }
+
+            if (syntax_error)
+                return;
+        }
+        
+
+        if (nb_people < 1) {
+            // nothing happens, as nobody was named to do something
+        }
+        else {
+            
+        }
 
         // interpret the sentence
-
-        // syntax error
-
-
+        Debug.Log("DoInterpret");
+        Debug.Log(PrintedList(translated_words));
     }
 
+    int findword(string word, out int translated)
+    {
+        wordType res = wordType.UNKOWN;
+        wordType curr_type = wordType.UNKOWN;
+        int j = 0;
+        translated = -1;
+
+        foreach (List<string> l in dictionary)
+        {
+            curr_type += 1;
+            j = 0;
+            foreach (string s in l)
+            {
+                if (word == s) {
+                    translated = j;
+                    res = curr_type;
+                    break;
+                }
+                j++;
+            }
+        }
+        return (int)res;
+    }
 
     public void Shuffle(int difficulty) {
 
         Verbs = new List<string>(VerbsBase);
         People = new List<string>(PeopleBase);
         Things = new List<string>(ThingsBase);
-        
+
+        // init dictionary
+        dictionary.Clear();
+        dictionary.Add(Verbs);
+        dictionary.Add(People);
+        dictionary.Add(Things);
+
         SwapRules.Clear();
 
         switch (difficulty) {

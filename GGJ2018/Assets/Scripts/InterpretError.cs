@@ -15,6 +15,10 @@ public class InterpretError : MonoBehaviour {
 	}
 
     public void TooFewWords() {
-        Debug.Log("ERROR : Too few words");
+        Debug.Log("ERROR : Too few words.");
+    }
+
+    public void SyntaxError(string word) {
+        Debug.Log("ERROR : Word " + word + " is unknown.");
     }
 }
