@@ -32,6 +32,7 @@ public class Character : MonoBehaviour {
         MotionPath = new List<Vector3>();
         MotionLocation = new Vector3();
         transform.rotation = Quaternion.identity;
+        CurrentRoom = null;
     }
 	
 	// Update is called once per frame
