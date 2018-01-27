@@ -1,6 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[System.Serializable]
+public class ObstacleDoor : System.Object {
+    public Obstacle Type = Obstacle.Door;
+    public MotionDirection Direction = MotionDirection.Invalid;
+}
 
 public class BasicRoom : MonoBehaviour {
 
@@ -12,6 +19,11 @@ public class BasicRoom : MonoBehaviour {
     public Type RoomType = Type.Regular;
 
     public List<Character> Characs;
+    public List<KeyObject> Keys;
+
+    public List<ObstacleDoor> Doors;
+
+    //public Dictionary<MotionDirection, Obstacle> Obstacles = new Dictionary<MotionDirection, Obstacle>();
 
     public void CharacterEnter(Character Char) {
         if(Characs.Contains(Char)) {
@@ -57,6 +69,18 @@ public class BasicRoom : MonoBehaviour {
 
     public void Reset() {
         Characs.Clear();
+        Keys.Clear();
     }
-    
+
+    public KeyObject Pickup(string KeyName) {
+        for(int i=0; i<Keys.Count; ++i) {
+            KeyObject Key = Keys[i];
+            if(string.Equals(KeyName, Key.KeyName, StringComparison.CurrentCultureIgnoreCase)) {
+                Keys.Remove(Key);
+                return Key;
+            }
+        }
+        return null;
+    }
+
 }

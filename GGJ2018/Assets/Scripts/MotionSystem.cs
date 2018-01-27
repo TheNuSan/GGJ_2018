@@ -88,13 +88,13 @@ public class MotionSystem : MonoBehaviour {
                 Room.PosX = (int)Mathf.Floor(Room.transform.position.x / 2.0f + 0.5f);
                 Room.PosY = (int)Mathf.Floor(Room.transform.position.y / 2.0f + 0.5f);
 
-                if(!ValidGridPos(Room.PosX, Room.PosY)) {
+                if (!ValidGridPos(Room.PosX, Room.PosY)) {
                     GameObject.Destroy(Room.gameObject);
                     Debug.LogError("Room outside " + Room.name);
                     continue;
                 }
 
-                if(Rooms[Room.PosX][Room.PosY] != null) {
+                if (Rooms[Room.PosX][Room.PosY] != null) {
                     GameObject.Destroy(Room.gameObject);
                     Debug.LogError("Room already there " + Room.name);
                     continue;
@@ -104,7 +104,7 @@ public class MotionSystem : MonoBehaviour {
                 Room.transform.position += MapOffset;
                 Room.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
-                if(Room.RoomType == BasicRoom.Type.Starting) {
+                if (Room.RoomType == BasicRoom.Type.Starting) {
                     StartingRoom = Room;
                 }
                 if (Room.RoomType == BasicRoom.Type.Ending) {
@@ -115,6 +115,32 @@ public class MotionSystem : MonoBehaviour {
             }
         }
 
+        GameObject[] KeyList = GameObject.FindGameObjectsWithTag("KeyObject");
+        for (int i = 0; i < KeyList.Length; ++i) {
+            KeyObject Key = KeyList[i].GetComponent<KeyObject>();
+            if (Key) {
+                Key.Reset();
+
+                Key.PosX = (int)Mathf.Floor(Key.transform.position.x / 2.0f + 0.5f);
+                Key.PosY = (int)Mathf.Floor(Key.transform.position.y / 2.0f + 0.5f);
+
+                if (!ValidGridPos(Key.PosX, Key.PosY)) {
+                    GameObject.Destroy(Key.gameObject);
+                    Debug.LogError("Key outside " + Key.name);
+                    continue;
+                }
+
+                BasicRoom OwnerRoom = Rooms[Key.PosX][Key.PosY];
+                if (!OwnerRoom) {
+                    GameObject.Destroy(Key.gameObject);
+                    Debug.LogError("Key no room " + Key.name);
+                    continue;
+                }
+
+                Key.OwnerRoom = OwnerRoom;
+                OwnerRoom.Keys.Add(Key);
+            }
+        }
     }
 
     void InitLevel() {
@@ -157,7 +183,7 @@ public class MotionSystem : MonoBehaviour {
 
         //LevelSys.GotToNextLevel();
 
-        //StartCoroutine(FakeParty());
+        StartCoroutine(FakeParty());
 
     }
 
@@ -167,6 +193,9 @@ public class MotionSystem : MonoBehaviour {
 
         yield return new WaitForSeconds(1f);
         MoveCharacterAlongDirection("ELF", "eAsT");
+
+        yield return new WaitForSeconds(1f);
+        PickUpObject("ELF", "key");
 
         yield return new WaitForSeconds(1f);
         MoveCharacterAlongDirection("Dwarf", "North");
@@ -308,6 +337,19 @@ public class MotionSystem : MonoBehaviour {
         Char.AddMotion(Path);
     }
 
+    public bool PickUpObject(string CharName, string KeyName) {
+
+        Character Char = GetCharacter(CharName);
+        if (!Char || !Char.CurrentRoom) return false;
+        if (!Char.CanPickUp()) return false;
+        BasicRoom CurrentRoom = Char.CurrentRoom;
+        KeyObject Key = CurrentRoom.Pickup(KeyName);
+        if (!Key) return false;
+
+        Char.PickUp(Key);
+        return true;
+    }
+    
     private void StartMotionTimer() {
         NeedAfterMotionCheck = true;
         MotionTimer = 0.7f;
