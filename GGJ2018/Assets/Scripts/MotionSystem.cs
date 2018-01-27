@@ -99,7 +99,7 @@ public class MotionSystem : MonoBehaviour {
             Char.FinishMotion();
         }
 
-        StartCoroutine(FakeParty());
+        //StartCoroutine(FakeParty());
         
     }
 

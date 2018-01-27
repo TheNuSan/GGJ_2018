@@ -14,8 +14,8 @@ public class InputSystem : MonoBehaviour {
     // Use this for initialization
     void Start () {
         myInterpret.init();
-        //myInterpret.Shuffle(0);
-        myInterpret.Shuffle(4);
+        myInterpret.Shuffle(0);
+        //myInterpret.Shuffle(4);
     }
 	
 	// Update is called once per frame
