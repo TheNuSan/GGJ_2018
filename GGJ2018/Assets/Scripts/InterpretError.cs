@@ -21,4 +21,15 @@ public class InterpretError : MonoBehaviour {
     public void SyntaxError(string word) {
         Debug.Log("ERROR : Word " + word + " is unknown.");
     }
+
+    public void MeaningError(List<string> word_list)
+    {
+        string sentence = "";
+        
+        foreach (string s in word_list)
+        {
+            sentence += " " + s;
+        }
+        Debug.Log("ERROR : The sentence \"" + sentence + "\" has no meaning.");
+    }
 }

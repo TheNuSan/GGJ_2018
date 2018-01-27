@@ -5,7 +5,8 @@ using UnityEngine;
 public class Interpret : MonoBehaviour {
 
     public static int MinWords = 3;
-    enum wordType {
+    
+    public enum wordType {
         UNKOWN,
         VERB,
         PERSON,
@@ -26,6 +27,8 @@ public class Interpret : MonoBehaviour {
 
     public InterpretError MyInterpretError;
 
+    public ActionManager MyActionManager;
+
     // Use this for initialization
     void Start()
     {
@@ -38,7 +41,7 @@ public class Interpret : MonoBehaviour {
         PeopleBase.Add("dwarf");
         PeopleBase.Add("elf");
         PeopleBase.Add("vampire");
-        PeopleBase.Add("warewolf");
+        PeopleBase.Add("werewolf");
 
         // directions
         /*ThingsBase.Add("up");
@@ -76,35 +79,44 @@ public class Interpret : MonoBehaviour {
         int nb_things = 0;
         bool syntax_error = false;
 
-        wordType [] wordtype = new wordType[MinWords];
-        List<string> translated_words = new List<string>();
+        //List<wordType> wordtypes = new List<wordType>();
+        List<string> ordered_words = new List<string>();
+        List<string> translated_sentence = new List<string>();
+        string person = "";
+        string verb = "";
+        wordType word_type = wordType.UNKOWN;
         int translated_index = -1;
-        // get the sentence from the base
 
-        for (i = 0; i < MinWords; i++) {
-            wordtype[i] = (wordType)findword(words[i].ToLower(), out translated_index);
+        // get the sentence from the base
+        for (i = 0; i < words.Length; i++) {
+            word_type = (wordType)findword(words[i].ToLower(), out translated_index);
             
-            switch (wordtype[i]) {
+            switch (word_type) {
                 case wordType.VERB:
                     nb_verbs++;
-                    translated_words.Add(VerbsBase[translated_index]);
+                    verb = VerbsBase[translated_index];
+                    translated_sentence.Add(verb);
                     break;
 
                 case wordType.PERSON:
                     nb_people++;
-                    translated_words.Add(PeopleBase[translated_index]);
+                    person = PeopleBase[translated_index];
+                    translated_sentence.Add(person);
                     break;
 
                 case wordType.THING:
                     nb_things++;
-                    translated_words.Add(ThingsBase[translated_index]);
+                    ordered_words.Add(ThingsBase[translated_index]);
+                    translated_sentence.Add(ThingsBase[translated_index]);
                     break;
 
                 case wordType.UNKOWN:
                 default:
-                    // syntax error
-                    MyInterpretError.SyntaxError(words[i]);
-                    syntax_error = true;
+                    if (i < MinWords) {
+                        // syntax error    
+                        MyInterpretError.SyntaxError(words[i]);
+                        syntax_error = true;
+                    }
                     break;
             }
 
@@ -112,17 +124,23 @@ public class Interpret : MonoBehaviour {
                 return;
         }
         
+        // insure the sentence means something
+        if (nb_people == 1 && nb_verbs == 1 && nb_things > 0) {
+            // interpret the sentence
+            Debug.Log("DoInterpret");
+            Debug.Log(PrintedList(translated_sentence));
 
-        if (nb_people < 1) {
-            // nothing happens, as nobody was named to do something
+            // put the words into order
+            ordered_words.Insert(0, verb);
+            ordered_words.Insert(0, person);
+
+            // call action
+            MyActionManager.PerformAction(ordered_words);
         }
         else {
-            
+            // the sentence has no meaning
+            MyInterpretError.MeaningError(translated_sentence);
         }
-
-        // interpret the sentence
-        Debug.Log("DoInterpret");
-        Debug.Log(PrintedList(translated_words));
     }
 
     int findword(string word, out int translated)

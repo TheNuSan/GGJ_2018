@@ -36,6 +36,7 @@ public class InputSystem : MonoBehaviour {
         }
 
         myInterpret.DoInterpret(words);
+        TextField.text = "";
     }
 
     
