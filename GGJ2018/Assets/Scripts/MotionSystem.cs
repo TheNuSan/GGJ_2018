@@ -106,7 +106,7 @@ public class MotionSystem : MonoBehaviour {
     private IEnumerator FakeParty() {
 
         yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("Elf", "East");
+        MoveCharacterAlongDirection("ELF", "eAsT");
 
         yield return new WaitForSeconds(1f);
         MoveCharacterAlongDirection("Dwarf", "North");
@@ -147,7 +147,7 @@ public class MotionSystem : MonoBehaviour {
     public Character GetCharacter(string CharName) {
         for (int i = 0; i < Characters.Count; ++i) {
             Character Char = Characters[i];
-            if(Char.name == CharName) {
+            if(string.Equals(Char.name, CharName, StringComparison.CurrentCultureIgnoreCase)) {
                 return Char;
             }
         }
@@ -156,7 +156,8 @@ public class MotionSystem : MonoBehaviour {
 
     public MotionDirection GetDirection(string DirName) {
         foreach (MotionDirection Dir in Enum.GetValues(typeof(MotionDirection))) {
-            if (Enum.GetName(typeof(MotionDirection), Dir) == DirName) {
+            string EnumName = Enum.GetName(typeof(MotionDirection), Dir);
+            if (string.Equals(EnumName, DirName, StringComparison.CurrentCultureIgnoreCase)) {
                 return Dir;
             }
         }
