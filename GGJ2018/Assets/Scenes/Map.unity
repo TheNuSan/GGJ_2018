@@ -469,6 +469,11 @@ Prefab:
       propertyPath: m_Name
       value: Room (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 114075724293527876, guid: d525b3ffdc043ab4cb5ae4bfeef12556,
+        type: 2}
+      propertyPath: RoomType
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d525b3ffdc043ab4cb5ae4bfeef12556, type: 2}
   m_IsPrefabParent: 0
@@ -897,6 +902,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114075724293527876, guid: d525b3ffdc043ab4cb5ae4bfeef12556,
+        type: 2}
+      propertyPath: RoomType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d525b3ffdc043ab4cb5ae4bfeef12556, type: 2}
   m_IsPrefabParent: 0
@@ -1282,8 +1292,6 @@ MonoBehaviour:
   RoomPrefab: {fileID: 1126218404706282, guid: d525b3ffdc043ab4cb5ae4bfeef12556, type: 2}
   LevelSizeX: 4
   LevelSizeY: 4
-  StartingRoom: {fileID: 0}
-  EndingRoom: {fileID: 0}
 --- !u!4 &2076184185
 Transform:
   m_ObjectHideFlags: 0
