@@ -22,4 +22,8 @@ public class BasicRoom : MonoBehaviour {
         }
         Characs.Remove(Char);
     }
+
+    public Vector3 GetCenterPosition() {
+        return transform.position;
+    }
 }
