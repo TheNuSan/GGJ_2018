@@ -43,4 +43,9 @@ public class BasicRoom : MonoBehaviour {
             }
         }
     }
+
+    public void Reset() {
+        Characs.Clear();
+    }
+    
 }
