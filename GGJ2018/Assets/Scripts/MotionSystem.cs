@@ -19,15 +19,17 @@ public class MotionSystem : MonoBehaviour {
     List<Character> Characters;
     List<List<BasicRoom>> Rooms;
 
-    public BasicRoom StartingRoom;
-    public BasicRoom EndingRoom;
+    BasicRoom StartingRoom;
+    BasicRoom EndingRoom;
 
     bool NeedAfterMotionCheck = false;
     float MotionTimer = -1.0f;
 
     bool IsFailedMission;
+    bool IsSuccesMission;
 
     GameObject LevelMaster;
+    LevelSystem LevelSys;
 
     void Awake() {
         Instance = this;
@@ -35,9 +37,9 @@ public class MotionSystem : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        LevelSys = GetComponent<LevelSystem>();
 
         InitLevel();
-
     }
 
     void AutoFillLevel() {
@@ -102,6 +104,13 @@ public class MotionSystem : MonoBehaviour {
                 Room.transform.position += MapOffset;
                 Room.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
+                if(Room.RoomType == BasicRoom.Type.Starting) {
+                    StartingRoom = Room;
+                }
+                if (Room.RoomType == BasicRoom.Type.Ending) {
+                    EndingRoom = Room;
+                }
+
                 Rooms[Room.PosX][Room.PosY] = Room;
             }
         }
@@ -111,6 +120,7 @@ public class MotionSystem : MonoBehaviour {
     void InitLevel() {
 
         IsFailedMission = false;
+        IsSuccesMission = false;
 
         Characters = new List<Character>();
         GameObject[] CharacList = GameObject.FindGameObjectsWithTag("Character");
@@ -132,18 +142,23 @@ public class MotionSystem : MonoBehaviour {
         }
         
         LoadLevelFromScene();
-
-        StartingRoom = Rooms[0][0]; // TODO
-        EndingRoom = Rooms[LevelSizeX - 1][LevelSizeY - 1];
-
+        
+        if(!StartingRoom) {
+            Debug.LogError("No starting room found");
+        }
+        if (!EndingRoom) {
+            Debug.LogError("No ending room found");
+        }
         for (int i = 0; i < Characters.Count; ++i) {
             Character Char = Characters[i];
             PlaceCharacter(Char, StartingRoom, true);
             Char.FinishMotion();
         }
 
+        //LevelSys.GotToNextLevel();
+
         //StartCoroutine(FakeParty());
-        
+
     }
 
     private IEnumerator FakeParty() {
@@ -228,6 +243,10 @@ public class MotionSystem : MonoBehaviour {
     }
 
     public bool MoveCharacterAlongDirection(Character Char, MotionDirection Dir) {
+
+        if(!CanRecieveCommand()) {
+            return false;
+        }
 
         int OffsetX = 0;
         int OffsetY = 0;
@@ -348,4 +367,22 @@ public class MotionSystem : MonoBehaviour {
         }
     }
 
+    private IEnumerator NextLevelTimer() {
+        yield return new WaitForSeconds(1f);
+        //InitLevel();
+        LevelSys.GotToNextLevel();
+    }
+
+    public void SuccesMission() {
+        if(!IsSuccesMission) {
+            IsSuccesMission = true;
+            StartCoroutine(NextLevelTimer());
+        }
+    }
+
+    public bool CanRecieveCommand() {
+        return !IsFailedMission && !IsSuccesMission;
+    }
+
+    public int GetCharacterCount() { return Characters.Count; }
 }
