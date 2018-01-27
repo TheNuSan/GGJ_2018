@@ -10,21 +10,33 @@ public class Character : MonoBehaviour {
     public Vector3 SlotPosition = new Vector3();
     public List<Character> WantDead = new List<Character>();
 
-    float FightTime = -1.0f;
-    Vector3 FightLocation = new Vector3();
-    List<Vector3> MotionPath = new List<Vector3>();
-    Vector3 MotionLocation = new Vector3();
+    SpriteRenderer SR;
+
+    float FightTime;
+    float SubFightTime;
+    Vector3 FightLocation;
+    Vector3 FightOffset;
+    List<Vector3> MotionPath;
+    Vector3 MotionLocation;
 
     // Use this for initialization
     void Start () {
-		
-	}
+        SR = GetComponent<SpriteRenderer>();
+    }
+
+    public void Reset() {
+        FightTime = -1.0f;
+        SubFightTime = 0.1f;
+        FightLocation = new Vector3();
+        FightOffset = Vector3.zero;
+        MotionPath = new List<Vector3>();
+        MotionLocation = new Vector3();
+        transform.rotation = Quaternion.identity;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-
-        Vector3 FightOffset = Vector3.zero;
-
+        
         if (MotionPath.Count>0) {
 
             float WalkSpeed = 5.0f;
@@ -34,6 +46,12 @@ public class Character : MonoBehaviour {
             if ( Dist > 0.1f) {
                 Dir.Normalize();
                 MotionLocation += WalkSpeed * Dir * Time.deltaTime;
+                if(Dir.x>0.1f) {
+                    SR.flipX = true;
+                }
+                if (Dir.x < -0.1f) {
+                    SR.flipX = false;
+                }
             } else {
                 if(MotionPath.Count==1) MotionLocation = MotionPath[0];
                 MotionPath.RemoveAt(0);
@@ -41,15 +59,26 @@ public class Character : MonoBehaviour {
         } else {
             if(FightTime>0.0f) {
 
-                float Disp = 1.0f;
-                Vector3 Goal = FightLocation + new Vector3(Random.Range(-Disp, Disp), Random.Range(-Disp, Disp), 0.0f);
-                Vector3 Dir = Goal - MotionLocation;
+                float Disp = 0.2f;
+                Vector3 Dir = FightLocation - transform.position;
                 float Dist = Dir.magnitude;
                 if (Dist > 0.0f) {
-                    FightOffset += Dir.normalized * Random.Range(0.5f, 1.5f) * Time.deltaTime;
+                    FightOffset += Dir.normalized * Time.deltaTime;
+                }
+                if(SubFightTime>0.0f) {
+                    SubFightTime -= Time.deltaTime;
+                } else {
+                    FightOffset += new Vector3(Random.Range(-Disp, Disp), Random.Range(-Disp, Disp), 0.0f);
+                    SubFightTime = Random.Range(0.1f, 0.2f);
                 }
 
                 FightTime -= Time.deltaTime;
+
+                if(FightTime<0.0f) {
+                    transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+                }
+            } else {
+                FightOffset = Vector3.zero;
             }
         }
 

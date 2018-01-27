@@ -8,6 +8,7 @@ public enum MotionDirection { North, East, South, West, Invalid };
 public class MotionSystem : MonoBehaviour {
 
     public GameObject RoomPrefab;
+    public static MotionSystem Instance;
     Vector3 MapOffset = new Vector3(-3.0f, -3.0f, 0.0f);
     Vector3 RoomOffset = new Vector3(2.0f, 2.0f, 0.0f);
     Vector3 CharacHeight = new Vector3(0.0f, 0.0f, -1.0f);
@@ -20,7 +21,18 @@ public class MotionSystem : MonoBehaviour {
 
     public BasicRoom StartingRoom;
     public BasicRoom EndingRoom;
-    
+
+    bool NeedAfterMotionCheck = false;
+    float MotionTimer = -1.0f;
+
+    bool IsFailedMission;
+
+    GameObject LevelMaster;
+
+    void Awake() {
+        Instance = this;
+    }
+
     // Use this for initialization
     void Start () {
 
@@ -33,11 +45,14 @@ public class MotionSystem : MonoBehaviour {
         LevelSizeX = 4;
         LevelSizeY = 4;
 
+        IsFailedMission = false;
+
         Characters = new List<Character>();
         GameObject[] CharacList = GameObject.FindGameObjectsWithTag("Character");
         for(int i=0; i<CharacList.Length; ++i) {
             Character Char = CharacList[i].GetComponent<Character>();
             if (Char) {
+                Char.Reset();
                 Char.Number = i;
                 Characters.Add(Char);
             }
@@ -51,12 +66,18 @@ public class MotionSystem : MonoBehaviour {
             Char.SlotPosition = new Vector3(Mathf.Cos(Alpha) * Dist, Mathf.Sin(Alpha) * Dist, 0.0f);
         }
 
+        if(LevelMaster) {
+            GameObject.Destroy(LevelMaster);
+        }
+        LevelMaster = new GameObject("LevelMaster");
+        LevelMaster.transform.position = Vector3.zero;
+
         Rooms = new List<List<BasicRoom>>();
         for (int i=0;i<LevelSizeX; ++i) {
             Rooms.Add(new List<BasicRoom>());
             for (int j = 0; j < LevelSizeY; ++j) {
 
-                GameObject RoomObject = GameObject.Instantiate(RoomPrefab);
+                GameObject RoomObject = GameObject.Instantiate(RoomPrefab, LevelMaster.transform);
                 BasicRoom NewRoom = RoomObject.GetComponent<BasicRoom>();
 
                 RoomObject.transform.position = new Vector3(RoomOffset.x*(float)i, RoomOffset.y*(float)j, 10.0f);
@@ -74,7 +95,7 @@ public class MotionSystem : MonoBehaviour {
 
         for (int i = 0; i < Characters.Count; ++i) {
             Character Char = Characters[i];
-            PlaceCharacter(Char, StartingRoom);
+            PlaceCharacter(Char, StartingRoom, true);
             Char.FinishMotion();
         }
 
@@ -85,12 +106,42 @@ public class MotionSystem : MonoBehaviour {
     private IEnumerator FakeParty() {
 
         yield return new WaitForSeconds(1f);
-
         MoveCharacterAlongDirection("Elf", "East");
 
         yield return new WaitForSeconds(1f);
-
         MoveCharacterAlongDirection("Dwarf", "North");
+
+        /*
+
+        yield return new WaitForSeconds(1f);
+        MoveCharacterAlongDirection("Dwarf", "North");
+
+        yield return new WaitForSeconds(1f);
+        MoveCharacterAlongDirection("Dwarf", "North");
+
+        yield return new WaitForSeconds(1f);
+        MoveCharacterAlongDirection("Elf", "East");
+
+        yield return new WaitForSeconds(1f);
+        MoveCharacterAlongDirection("Elf", "North");
+
+        yield return new WaitForSeconds(1f);
+        MoveCharacterAlongDirection("Elf", "North");
+
+        yield return new WaitForSeconds(1f);
+        MoveCharacterAlongDirection("Werewolf", "North");
+
+        yield return new WaitForSeconds(1f);
+        MoveCharacterAlongDirection("Vampire", "North");
+
+        yield return new WaitForSeconds(1f);
+        MoveCharacterAlongDirection("Werewolf", "North");
+
+        yield return new WaitForSeconds(1f);
+        MoveCharacterAlongDirection("Vampire", "North");
+
+    */
+
     }
 
     public Character GetCharacter(string CharName) {
@@ -147,7 +198,7 @@ public class MotionSystem : MonoBehaviour {
         return true;
     }
 
-    void PlaceCharacter(Character Char, BasicRoom Room) {
+    void PlaceCharacter(Character Char, BasicRoom Room, bool FirstPlacing = false) {
 
         BasicRoom OldRoom = Char.CurrentRoom;
         if(Char.CurrentRoom) {
@@ -172,22 +223,67 @@ public class MotionSystem : MonoBehaviour {
             Path.Add(Char.CurrentRoom.GetCenterPosition() + Char.SlotPosition + CharacHeight);
         }
         Char.FinishMotion();
+        if (!FirstPlacing) {
+            FinishTurn();
+            StartMotionTimer();
+        }
         Char.AddMotion(Path);
+    }
+
+    private void StartMotionTimer() {
+        NeedAfterMotionCheck = true;
+        MotionTimer = 0.7f;
     }
 
     public void FinishTurn() {
 
-        for (int i = 0; i < LevelSizeX; ++i) {
-            for (int j = 0; j < LevelSizeY; ++j) {
-                BasicRoom Room = Rooms[i][j];
-                Room.CheckRoom();
+        if(NeedAfterMotionCheck) {
+
+            for (int i = 0; i < LevelSizeX; ++i) {
+                for (int j = 0; j < LevelSizeY; ++j) {
+                    BasicRoom Room = Rooms[i][j];
+                    Room.CheckRoom();
+                }
             }
+
         }
 
+        NeedAfterMotionCheck = false;
     }    
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+    public void GetCamPos(ref Vector3 RefPosition, ref Vector3 RefSize) {
+        
+        Bounds Boun = new Bounds();
+        for (int i = 0; i < Characters.Count; ++i) {
+            Character Char = Characters[i];
+            Boun.Encapsulate(Char.GetMotionLocation());
+        }
+
+        RefPosition = Boun.center;
+        RefSize = Boun.size;
+    }
+
+    // Update is called once per frame
+    void Update () {
+		if(NeedAfterMotionCheck) {
+            if (MotionTimer > 0.0f) {
+                MotionTimer -= Time.deltaTime;
+            } else {
+                FinishTurn();
+                NeedAfterMotionCheck = false;
+            }
+        }
 	}
+
+    private IEnumerator RestartTimer() {
+        yield return new WaitForSeconds(5f);
+        InitLevel();
+    }
+
+    public void FailedMission() {
+        IsFailedMission = true;
+
+        StartCoroutine(RestartTimer());
+    }
+
 }
