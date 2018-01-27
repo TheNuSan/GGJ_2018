@@ -16,7 +16,7 @@ public class InputSystem : MonoBehaviour {
     void Start () {
         myInterpret.init();
         //myInterpret.Shuffle(0);
-        myInterpret.Shuffle(4);
+        myInterpret.Shuffle(3);
         TextField.Select();
         TextField.ActivateInputField();
     }
