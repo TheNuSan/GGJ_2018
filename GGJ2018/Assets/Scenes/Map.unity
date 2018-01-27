@@ -250,6 +250,24 @@ Prefab:
       propertyPath: m_TagString
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 212669389213016030, guid: 8c50a570a1328364ca1c662232f1c8bc,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4116e067ff12d62469092ce6d7b08608,
+        type: 3}
+    - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
   m_IsPrefabParent: 0
@@ -497,9 +515,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RoomPrefab: {fileID: 1126218404706282, guid: d525b3ffdc043ab4cb5ae4bfeef12556, type: 2}
-  MapOffset: {x: -3, y: -3, z: 0}
-  RoomOffset: {x: 2.1, y: 2.1, z: 0}
-  CharacHeight: {x: 0, y: 0, z: -1}
   StartingRoom: {fileID: 0}
   EndingRoom: {fileID: 0}
 --- !u!1 &1057927621
@@ -885,11 +900,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -1.9674897
+      value: -1.14
       objectReference: {fileID: 0}
     - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.8931663
+      value: 0.84
       objectReference: {fileID: 0}
     - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
       propertyPath: m_LocalPosition.z
@@ -942,6 +957,24 @@ Prefab:
     - target: {fileID: 1744315523948314, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
       propertyPath: m_TagString
       value: Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 212669389213016030, guid: 8c50a570a1328364ca1c662232f1c8bc,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3269f056ae68a1e4a88e8815fd6dc780,
+        type: 3}
+    - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
