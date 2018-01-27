@@ -397,7 +397,7 @@ MonoBehaviour:
   - West
   SwapRules: []
   MyInterpretError: {fileID: 114229112016528552}
-  MyActionManager: {fileID: 114806064653257324}
+  MyActionManager: {fileID: 0}
   RulesText: {fileID: 114249347849849950}
 --- !u!114 &114085903836726678
 MonoBehaviour:
@@ -698,7 +698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnableTimer: 1
-  StartTime: 15
+  StartTime: 180
   CountText: {fileID: 114044851186405694}
 --- !u!114 &114334638235585528
 MonoBehaviour:
