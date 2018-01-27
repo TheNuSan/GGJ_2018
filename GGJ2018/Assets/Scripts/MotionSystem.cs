@@ -143,7 +143,7 @@ public class MotionSystem : MonoBehaviour {
         }
 
         //StartCoroutine(FakeParty());
-        
+        Timer.Instance.ResetTimer();
     }
 
     private IEnumerator FakeParty() {
