@@ -196,13 +196,15 @@ public class Interpret : MonoBehaviour {
 
             case 4:
                 // Peoples are mixed with Things
-                ShuffleBetween(PeopleBase, ThingsBase, People, Things, 3);
+                //ShuffleBetween(PeopleBase, ThingsBase, People, Things, 3);
+                ShuffleTroughout(PeopleBase, ThingsBase, People, Things, 3);
                 break;
 
             case 3:
             // Verbs are shuffled together
-                // ShuffleWithin(VerbsBase,Verbs);
-                //break;
+            // ShuffleWithin(VerbsBase,Verbs);
+                ShuffleBetween(PeopleBase, ThingsBase, People, Things, 3);
+                break;
 
             case 2:
                 // Things are shuffled together
@@ -264,23 +266,10 @@ public class Interpret : MonoBehaviour {
 
         for (i = 0; i < nb_swap; i++) {
             // pick first candidate to swap
-            j = Random.Range(0, inputList.Count);
-            while (swapped[j]) {
-                j++;
-                if (j == inputList.Count)
-                    j = 0;
-            }
-            swapped[j] = true;
+            j = GetSwapCandidate(ref inputList, ref swapped);
 
             // pick second candidate to swap
-            k = Random.Range(0, inputList.Count);
-            while (swapped[k])
-            {
-                k++;
-                if (k == inputList.Count)
-                    k = 0;
-            }
-            swapped[k] = true;
+            k = GetSwapCandidate(ref inputList, ref swapped);
 
             // do the swap
             outputList[j] = inputList[k];
@@ -320,24 +309,10 @@ public class Interpret : MonoBehaviour {
         for (i = 0; i < nb_swap; i++)
         {
             // pick first candidate to swap
-            j = Random.Range(0, inputList1.Count);
-            while (swapped1[j])
-            {
-                j++;
-                if (j == inputList1.Count)
-                    j = 0;
-            }
-            swapped1[j] = true;
+            j = GetSwapCandidate(ref inputList1, ref swapped1);
 
             // pick second candidate to swap
-            k = Random.Range(0, inputList2.Count);
-            while (swapped2[k])
-            {
-                k++;
-                if (k == inputList2.Count)
-                    k = 0;
-            }
-            swapped2[k] = true;
+            k = GetSwapCandidate(ref inputList2, ref swapped2);
 
             // do the swap
             outputList1[j] = inputList2[k];
@@ -348,6 +323,92 @@ public class Interpret : MonoBehaviour {
         }
     }
 
+    void ShuffleTroughout(
+        List<string> inputList1, List<string> inputList2,
+        List<string> outputList1, List<string> outputList2,
+        int nb_swap)
+    {
+        List<bool> swapped1 = new List<bool>();
+        List<bool> swapped2 = new List<bool>();
+        int i, j = 0, k = 0, t1 = 0, t2 = 0;
+
+        // init swapped list
+        for (i = 0; i < inputList1.Count; i++)
+        {
+            swapped1.Add(false);
+        }
+        for (i = 0; i < inputList2.Count; i++)
+        {
+            swapped2.Add(false);
+        }
+
+        // max swaps possible
+        if (nb_swap > inputList1.Count)
+            nb_swap = inputList1.Count;
+        if (nb_swap > inputList2.Count)
+            nb_swap = inputList2.Count;
+
+        for (i = 0; i < nb_swap; i++)
+        {
+            // pick first candidate to swap
+            t1 = Random.Range(0, 2);
+            if (t1 == 0)
+            {
+                j = GetSwapCandidate(ref inputList1, ref swapped1);
+            } else {
+                j = GetSwapCandidate(ref inputList2, ref swapped2);
+            }
+
+            // pick second candidate to swap
+            t2 = Random.Range(0, 2);
+            if (t2 == 0)
+            {
+                k = GetSwapCandidate(ref inputList1, ref swapped1);
+            }
+            else
+            {
+                k = GetSwapCandidate(ref inputList2, ref swapped2);
+            }
+
+            // do the swap and record rules
+            if (t1 == 0) {
+                if (t2 == 0) {
+                    outputList1[j] = inputList1[k];
+                    outputList1[k] = inputList1[j];
+                    SwapRules.Add(outputList1[j] + " <--> " + outputList1[k]);
+                } else {
+                    outputList1[j] = inputList2[k];
+                    outputList2[k] = inputList1[j];
+                    SwapRules.Add(outputList1[j] + " <--> " + outputList2[k]);
+                }
+            
+            } else {
+                if (t2 == 0) {
+                    outputList2[j] = inputList1[k];
+                    outputList1[k] = inputList2[j];
+                    SwapRules.Add(outputList2[j] + " <--> " + outputList1[k]);
+                } else {
+                    outputList2[j] = inputList2[k];
+                    outputList2[k] = inputList2[j];
+                    SwapRules.Add(outputList2[j] + " <--> " + outputList2[k]);
+                }
+            }
+        }
+    }
+
+    int GetSwapCandidate(ref List<string> InputList, ref List<bool> Swapped) {
+        
+        int res = Random.Range(0, InputList.Count);
+        while (Swapped[res])
+        {
+            res++;
+            if (res == InputList.Count)
+                res = 0;
+        }
+        Swapped[res] = true;
+
+        return res;
+    }
 
     string PrintedList(List<string> inputList)
     {
