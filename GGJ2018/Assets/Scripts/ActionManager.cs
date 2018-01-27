@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class ActionManager : MonoBehaviour {
 
-    public MotionSystem theMotionSystem = MotionSystem.Instance;
+    MotionSystem theMotionSystem;
     public InterpretError MyInterpretError;
 
     // Use this for initialization
     void Start () {
-		
-	}
+        theMotionSystem = MotionSystem.Instance;
+    }
 	
 	// Update is called once per frame
 	void Update () {
