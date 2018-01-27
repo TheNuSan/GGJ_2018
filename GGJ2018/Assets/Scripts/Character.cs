@@ -10,6 +10,8 @@ public class Character : MonoBehaviour {
     public Vector3 SlotPosition = new Vector3();
     public List<Character> WantDead = new List<Character>();
 
+    KeyObject InHand;
+
     SpriteRenderer SR;
 
     float FightTime;
@@ -33,10 +35,12 @@ public class Character : MonoBehaviour {
         MotionLocation = new Vector3();
         transform.rotation = Quaternion.identity;
         CurrentRoom = null;
+        InHand = null;
     }
 	
 	// Update is called once per frame
 	void Update () {
+
         
         if (MotionPath.Count>0) {
 
@@ -84,6 +88,15 @@ public class Character : MonoBehaviour {
         }
 
         transform.position = MotionLocation + FightOffset;
+
+        if (InHand) {
+            Vector3 Dir = transform.position - InHand.transform.position;
+            float Dist = Dir.magnitude;
+            if (Dist > 0.1f) {
+                Dir.Normalize();
+                InHand.transform.position += 5.0f * Dir * Time.deltaTime;
+            }
+        }
     }
 
     public void AddMotion(List<Vector3> Path) {
@@ -111,5 +124,16 @@ public class Character : MonoBehaviour {
 
     public Vector3 GetMotionLocation() {
         return MotionLocation;
+    }
+
+    public bool CanPickUp() {
+        if (InHand) return false;
+        return true;
+    }
+
+    public bool PickUp(KeyObject NewObj) {
+        if (InHand) return false;
+        InHand = NewObj;
+        return true;
     }
 }
