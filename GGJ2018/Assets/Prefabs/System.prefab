@@ -222,9 +222,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c165bebbf8a1f4298755880c7730db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Verbs: []
-  People: []
-  Things: []
+  Verbs:
+  - move
+  People:
+  - Dwarf
+  - Elf
+  - Vampire
+  - Werewolf
+  Things:
+  - North
+  - South
+  - East
+  - West
   SwapRules: []
   MyInterpretError: {fileID: 114229112016528552}
   MyActionManager: {fileID: 0}
@@ -487,7 +496,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Welcome to the dungeon
+  m_Text: 'ELF: Yes, master wizard.'
 --- !u!114 &114366182034373738
 MonoBehaviour:
   m_ObjectHideFlags: 1
