@@ -148,11 +148,16 @@ public class MotionSystem : MonoBehaviour {
 
     private IEnumerator FakeParty() {
 
+        Debug.Log("Start Party");
+
         yield return new WaitForSeconds(1f);
         MoveCharacterAlongDirection("ELF", "eAsT");
 
         yield return new WaitForSeconds(1f);
         MoveCharacterAlongDirection("Dwarf", "North");
+
+        yield return new WaitForSeconds(1f);
+        MoveCharacterAlongDirection("ELF", "north");
 
         /*
 
@@ -208,6 +213,7 @@ public class MotionSystem : MonoBehaviour {
     }
 
     public bool MoveCharacterAlongDirection(string CharName, string DirName) {
+        Debug.Log("Try move " + CharName + " to " + DirName);
         Character Char = GetCharacter(CharName);
         MotionDirection Dir = GetDirection(DirName);
         if(!Char || Dir == MotionDirection.Invalid) {
@@ -336,9 +342,10 @@ public class MotionSystem : MonoBehaviour {
     }
 
     public void FailedMission() {
-        IsFailedMission = true;
-
-        StartCoroutine(RestartTimer());
+        if (!IsFailedMission) {
+            IsFailedMission = true;
+            StartCoroutine(RestartTimer());
+        }
     }
 
 }
