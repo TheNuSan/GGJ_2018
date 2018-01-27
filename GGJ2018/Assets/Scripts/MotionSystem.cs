@@ -9,12 +9,12 @@ public class MotionSystem : MonoBehaviour {
 
     public GameObject RoomPrefab;
     public static MotionSystem Instance;
-    Vector3 MapOffset = new Vector3(-3.0f, -3.0f, 0.0f);
+    Vector3 MapOffset = new Vector3(0.0f, 0.0f, 0.0f);
     Vector3 RoomOffset = new Vector3(2.0f, 2.0f, 0.0f);
     Vector3 CharacHeight = new Vector3(0.0f, 0.0f, -1.0f);
 
-    int LevelSizeX = 4;
-    int LevelSizeY = 4;
+    public int LevelSizeX = 4;
+    public int LevelSizeY = 4;
     
     List<Character> Characters;
     List<List<BasicRoom>> Rooms;
@@ -40,10 +40,75 @@ public class MotionSystem : MonoBehaviour {
 
     }
 
-    void InitLevel() {
+    void AutoFillLevel() {
+        if (LevelMaster) {
+            GameObject.Destroy(LevelMaster);
+        }
+        LevelMaster = new GameObject("LevelMaster");
+        LevelMaster.transform.position = Vector3.zero;
 
-        LevelSizeX = 4;
-        LevelSizeY = 4;
+        Rooms = new List<List<BasicRoom>>();
+        for (int i = 0; i < LevelSizeX; ++i) {
+            Rooms.Add(new List<BasicRoom>());
+            for (int j = 0; j < LevelSizeY; ++j) {
+
+                GameObject RoomObject = GameObject.Instantiate(RoomPrefab, LevelMaster.transform);
+                BasicRoom NewRoom = RoomObject.GetComponent<BasicRoom>();
+
+                RoomObject.transform.position = new Vector3(RoomOffset.x * (float)i, RoomOffset.y * (float)j, 10.0f);
+                RoomObject.transform.position += MapOffset;
+
+                RoomObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                NewRoom.PosX = i;
+                NewRoom.PosY = j;
+
+                Rooms[i].Add(NewRoom);
+            }
+        }
+    }
+
+    void LoadLevelFromScene() {
+
+        Rooms = new List<List<BasicRoom>>();
+        for (int i = 0; i < LevelSizeX; ++i) {
+            Rooms.Add(new List<BasicRoom>());
+            for (int j = 0; j < LevelSizeY; ++j) {
+                Rooms[i].Add(null);
+            }
+        }
+
+        GameObject[] RoomList = GameObject.FindGameObjectsWithTag("Room");
+        for (int i = 0; i < RoomList.Length; ++i) {
+            BasicRoom Room = RoomList[i].GetComponent<BasicRoom>();
+            if (Room) {
+                Room.Reset();
+
+                Room.PosX = (int)Mathf.Floor(Room.transform.position.x / 2.0f + 0.5f);
+                Room.PosY = (int)Mathf.Floor(Room.transform.position.y / 2.0f + 0.5f);
+
+                if(!ValidGridPos(Room.PosX, Room.PosY)) {
+                    GameObject.Destroy(Room.gameObject);
+                    Debug.LogError("Room outside " + Room.name);
+                    continue;
+                }
+
+                if(Rooms[Room.PosX][Room.PosY] != null) {
+                    GameObject.Destroy(Room.gameObject);
+                    Debug.LogError("Room already there " + Room.name);
+                    continue;
+                }
+
+                Room.transform.position = new Vector3(RoomOffset.x * (float)Room.PosX, RoomOffset.y * (float)Room.PosY, 10.0f);
+                Room.transform.position += MapOffset;
+                Room.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+                Rooms[Room.PosX][Room.PosY] = Room;
+            }
+        }
+
+    }
+
+    void InitLevel() {
 
         IsFailedMission = false;
 
@@ -65,32 +130,10 @@ public class MotionSystem : MonoBehaviour {
             float Alpha = Char.Number * Mathf.PI * 2.0f / (float)Characters.Count;
             Char.SlotPosition = new Vector3(Mathf.Cos(Alpha) * Dist, Mathf.Sin(Alpha) * Dist, 0.0f);
         }
+        
+        LoadLevelFromScene();
 
-        if(LevelMaster) {
-            GameObject.Destroy(LevelMaster);
-        }
-        LevelMaster = new GameObject("LevelMaster");
-        LevelMaster.transform.position = Vector3.zero;
-
-        Rooms = new List<List<BasicRoom>>();
-        for (int i=0;i<LevelSizeX; ++i) {
-            Rooms.Add(new List<BasicRoom>());
-            for (int j = 0; j < LevelSizeY; ++j) {
-
-                GameObject RoomObject = GameObject.Instantiate(RoomPrefab, LevelMaster.transform);
-                BasicRoom NewRoom = RoomObject.GetComponent<BasicRoom>();
-
-                RoomObject.transform.position = new Vector3(RoomOffset.x*(float)i, RoomOffset.y*(float)j, 10.0f);
-                RoomObject.transform.position += MapOffset;
-                RoomObject.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
-                NewRoom.PosX = i;
-                NewRoom.PosY = j;
-
-                Rooms[i].Add(NewRoom);
-            }
-        }
-
-        StartingRoom = Rooms[0][0];
+        StartingRoom = Rooms[0][0]; // TODO
         EndingRoom = Rooms[LevelSizeX - 1][LevelSizeY - 1];
 
         for (int i = 0; i < Characters.Count; ++i) {
@@ -99,7 +142,7 @@ public class MotionSystem : MonoBehaviour {
             Char.FinishMotion();
         }
 
-        //StartCoroutine(FakeParty());
+        StartCoroutine(FakeParty());
         
     }
 
@@ -173,6 +216,11 @@ public class MotionSystem : MonoBehaviour {
         return MoveCharacterAlongDirection(Char, Dir);
     }
 
+    public bool ValidGridPos(int i, int j) {
+        if (i < 0 || i >= LevelSizeX || j < 0 || j >= LevelSizeY) return false;
+        return true;
+    }
+
     public bool MoveCharacterAlongDirection(Character Char, MotionDirection Dir) {
 
         int OffsetX = 0;
@@ -189,11 +237,15 @@ public class MotionSystem : MonoBehaviour {
         int NewCaseX = Room.PosX + OffsetX;
         int NewCaseY = Room.PosY + OffsetY;
 
-        if(NewCaseX<0 || NewCaseX>=LevelSizeX || NewCaseY<0 || NewCaseY>=LevelSizeY) {
+        if(!ValidGridPos(NewCaseX, NewCaseY)) {
             return false;
         }
 
         BasicRoom OtherRoom = Rooms[NewCaseX][NewCaseY];
+        if(!OtherRoom) {
+            return false;
+        }
+
         PlaceCharacter(Char, OtherRoom);
 
         return true;
@@ -243,7 +295,9 @@ public class MotionSystem : MonoBehaviour {
             for (int i = 0; i < LevelSizeX; ++i) {
                 for (int j = 0; j < LevelSizeY; ++j) {
                     BasicRoom Room = Rooms[i][j];
-                    Room.CheckRoom();
+                    if (Room) {
+                        Room.CheckRoom();
+                    }
                 }
             }
 
