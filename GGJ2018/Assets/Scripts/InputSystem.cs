@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 public class InputSystem : MonoBehaviour {
 
@@ -24,8 +25,10 @@ public class InputSystem : MonoBehaviour {
 	}
 
     public void AcceptInput() {
-        Debug.Log(TextField.text);
+        //Debug.Log(TextField.text);
         string myString = TextField.text;
+        myString = Regex.Replace(myString, @"\s+", " ");
+
         string[] words = myString.Split(" ".ToCharArray());
         
         // to few words error
@@ -35,8 +38,8 @@ public class InputSystem : MonoBehaviour {
             return;
         }
 
-        myInterpret.DoInterpret(words);
-        TextField.text = "";
+        if (myInterpret.DoInterpret(words))
+            TextField.text = "";
     }
 
     

@@ -26,7 +26,6 @@ public class Interpret : MonoBehaviour {
     List<List<string>> dictionary = new List<List<string>>();
 
     public InterpretError MyInterpretError;
-
     public ActionManager MyActionManager;
 
     // Use this for initialization
@@ -38,20 +37,20 @@ public class Interpret : MonoBehaviour {
     public void init() {
         VerbsBase.Add("move");
 
-        PeopleBase.Add("dwarf");
-        PeopleBase.Add("elf");
-        PeopleBase.Add("vampire");
-        PeopleBase.Add("werewolf");
+        PeopleBase.Add("Dwarf");
+        PeopleBase.Add("Elf");
+        PeopleBase.Add("Vampire");
+        PeopleBase.Add("Werewolf");
 
         // directions
         /*ThingsBase.Add("up");
         ThingsBase.Add("down");
         ThingsBase.Add("right");
         ThingsBase.Add("left");*/
-        ThingsBase.Add("north");
-        ThingsBase.Add("south");
-        ThingsBase.Add("east");
-        ThingsBase.Add("west");
+        ThingsBase.Add("North");
+        ThingsBase.Add("South");
+        ThingsBase.Add("East");
+        ThingsBase.Add("West");
 
         Verbs = new List<string>(VerbsBase);
         People = new List<string>(PeopleBase);
@@ -71,8 +70,9 @@ public class Interpret : MonoBehaviour {
 		
 	}
 
-    public void DoInterpret(string[] words)
+    public bool DoInterpret(string[] words)
     {
+        bool res = false;
         int i;
         int nb_verbs = 0;
         int nb_people = 0;
@@ -121,26 +121,31 @@ public class Interpret : MonoBehaviour {
             }
 
             if (syntax_error)
-                return;
+                return res;
         }
         
         // insure the sentence means something
         if (nb_people == 1 && nb_verbs == 1 && nb_things > 0) {
             // interpret the sentence
-            Debug.Log("DoInterpret");
-            Debug.Log(PrintedList(translated_sentence));
+            //Debug.Log("DoInterpret");
+            //Debug.Log(PrintedList(translated_sentence));
 
             // put the words into order
             ordered_words.Insert(0, verb);
             ordered_words.Insert(0, person);
 
             // call action
-            MyActionManager.PerformAction(ordered_words);
+            res = MyActionManager.PerformAction(ordered_words);
+            
+            if (res)
+                MyInterpretError.Success(person);
         }
         else {
             // the sentence has no meaning
             MyInterpretError.MeaningError(translated_sentence);
         }
+
+        return res;
     }
 
     int findword(string word, out int translated)
@@ -156,7 +161,7 @@ public class Interpret : MonoBehaviour {
             j = 0;
             foreach (string s in l)
             {
-                if (word == s) {
+                if (word == s.ToLower()) {
                     translated = j;
                     res = curr_type;
                     break;
@@ -215,14 +220,14 @@ public class Interpret : MonoBehaviour {
                 break;
         }
 
-        Debug.Log("Shuffle()");
+        /*Debug.Log("Shuffle()");
         Debug.Log("People");
         Debug.Log(PrintedList(People));
         Debug.Log("Verbs");
         Debug.Log(PrintedList(Verbs));
         Debug.Log("Things");
         Debug.Log(PrintedList(Things));
-
+        */
         Debug.Log("SwapRules");
         Debug.Log(PrintedList(SwapRules));
     }

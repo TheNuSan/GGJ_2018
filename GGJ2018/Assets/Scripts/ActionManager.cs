@@ -6,6 +6,7 @@ using UnityEngine;
 public class ActionManager : MonoBehaviour {
 
     public MotionSystem theMotionSystem = MotionSystem.Instance;
+    public InterpretError MyInterpretError;
 
     // Use this for initialization
     void Start () {
@@ -17,16 +18,21 @@ public class ActionManager : MonoBehaviour {
 		
 	}
 
-    public void PerformAction(List<string> word_list) {
-        
+    public bool PerformAction(List<string> word_list) {
+
+        bool res = false;
+
         // select action by verb    
         switch (word_list[1]) {
-
+            
             case "move":
             default:
-                theMotionSystem.MoveCharacterAlongDirection(word_list[0], word_list[2]);
+                res = theMotionSystem.MoveCharacterAlongDirection(word_list[0], word_list[2]);
+                if (!res)
+                    MyInterpretError.MoveError(word_list[0], word_list[2]);
                 break;
         }
 
+        return res;
     }
 }
