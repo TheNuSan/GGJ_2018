@@ -26,4 +26,19 @@ public class BasicRoom : MonoBehaviour {
     public Vector3 GetCenterPosition() {
         return transform.position;
     }
+
+    public void CheckRoom() {
+        if (Characs.Count != 2) return;
+        for(int i=0; i<Characs.Count; ++i) {
+            Character FirstChar = Characs[i];
+            for (int j = i+1; j < Characs.Count; ++j) {
+                Character SecondChar = Characs[j];
+                if( FirstChar.IsWantingDead(SecondChar) || SecondChar.IsWantingDead(FirstChar)) {
+                    Vector3 FightLocation = (FirstChar.GetMotionLocation() + SecondChar.GetMotionLocation()) / 2.0f;
+                    FirstChar.AddFight(FightLocation);
+                    SecondChar.AddFight(FightLocation);
+                }
+            }
+        }
+    }
 }
