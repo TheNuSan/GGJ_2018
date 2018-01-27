@@ -190,6 +190,24 @@ Prefab:
       propertyPath: WantDead.Array.data[0]
       value: 
       objectReference: {fileID: 950764371}
+    - target: {fileID: 212669389213016030, guid: 8c50a570a1328364ca1c662232f1c8bc,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f2d4127cc87faa54b926e479b6857b89,
+        type: 3}
+    - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
   m_IsPrefabParent: 0
@@ -1073,6 +1091,24 @@ Prefab:
     - target: {fileID: 1744315523948314, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
       propertyPath: m_TagString
       value: Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 212669389213016030, guid: 8c50a570a1328364ca1c662232f1c8bc,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0880250359d4edf4795243fb832d5854,
+        type: 3}
+    - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
