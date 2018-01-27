@@ -120,6 +120,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1286830769}
     m_Modifications:
+    - target: {fileID: 114552841976024260, guid: 8c50a570a1328364ca1c662232f1c8bc,
+        type: 2}
+      propertyPath: WantDead.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
       propertyPath: m_LocalPosition.x
       value: -1.9674897
@@ -180,6 +185,11 @@ Prefab:
       propertyPath: m_TagString
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 114552841976024260, guid: 8c50a570a1328364ca1c662232f1c8bc,
+        type: 2}
+      propertyPath: WantDead.Array.data[0]
+      value: 
+      objectReference: {fileID: 950764371}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
   m_IsPrefabParent: 0
@@ -254,7 +264,7 @@ Prefab:
         type: 2}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 4116e067ff12d62469092ce6d7b08608,
+      objectReference: {fileID: 21300000, guid: f2d4127cc87faa54b926e479b6857b89,
         type: 3}
     - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
       propertyPath: m_LocalScale.x
@@ -292,6 +302,7 @@ GameObject:
   - component: {fileID: 353694492}
   - component: {fileID: 353694491}
   - component: {fileID: 353694490}
+  - component: {fileID: 353694489}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -299,6 +310,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &353694489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353694488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81bd3ae6ceedca04da18be41d5368535, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!81 &353694490
 AudioListener:
   m_ObjectHideFlags: 0
@@ -312,7 +334,7 @@ Behaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 353694488}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &353694492
 Camera:
   m_ObjectHideFlags: 0
@@ -321,7 +343,7 @@ Camera:
   m_GameObject: {fileID: 353694488}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
@@ -329,7 +351,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: -2.46
+  near clip plane: -1
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -338,15 +360,15 @@ Camera:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingPath: -1
+  m_RenderingPath: 1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!4 &353694493
@@ -517,6 +539,12 @@ MonoBehaviour:
   RoomPrefab: {fileID: 1126218404706282, guid: d525b3ffdc043ab4cb5ae4bfeef12556, type: 2}
   StartingRoom: {fileID: 0}
   EndingRoom: {fileID: 0}
+--- !u!114 &950764371 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114552841976024260, guid: 8c50a570a1328364ca1c662232f1c8bc,
+    type: 2}
+  m_PrefabInternal: {fileID: 1831180382}
+  m_Script: {fileID: 11500000, guid: e1e1540e0beda8744affa467c2149d95, type: 3}
 --- !u!1 &1057927621
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,19 +990,19 @@ Prefab:
         type: 2}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 3269f056ae68a1e4a88e8815fd6dc780,
+      objectReference: {fileID: 21300000, guid: 0880250359d4edf4795243fb832d5854,
         type: 3}
     - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
       propertyPath: m_LocalScale.x
-      value: 0.1
+      value: 0.12
       objectReference: {fileID: 0}
     - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 0.12
       objectReference: {fileID: 0}
     - target: {fileID: 4673460045991400, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}
       propertyPath: m_LocalScale.z
-      value: 0.1
+      value: 0.12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c50a570a1328364ca1c662232f1c8bc, type: 2}

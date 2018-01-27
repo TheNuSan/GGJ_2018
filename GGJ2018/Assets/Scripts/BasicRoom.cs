@@ -37,6 +37,8 @@ public class BasicRoom : MonoBehaviour {
                     Vector3 FightLocation = (FirstChar.GetMotionLocation() + SecondChar.GetMotionLocation()) / 2.0f;
                     FirstChar.AddFight(FightLocation);
                     SecondChar.AddFight(FightLocation);
+
+                    MotionSystem.Instance.FailedMission();
                 }
             }
         }
