@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Interpret : MonoBehaviour {
 
@@ -27,6 +28,7 @@ public class Interpret : MonoBehaviour {
 
     public InterpretError MyInterpretError;
     public ActionManager MyActionManager;
+    public Text RulesText;
 
     // Use this for initialization
     void Start()
@@ -228,8 +230,22 @@ public class Interpret : MonoBehaviour {
         Debug.Log("Things");
         Debug.Log(PrintedList(Things));
         */
-        Debug.Log("SwapRules");
-        Debug.Log(PrintedList(SwapRules));
+        //Debug.Log("SwapRules");
+        //Debug.Log(PrintedList(SwapRules));
+
+        string rules_text = "Beware:\n";
+        foreach(string s in SwapRules) {
+            rules_text += s + "\n";
+        }
+
+        if (rules_text == "")
+        {
+            RulesText.text = "Hmmm, everything seems normal here...";
+        }
+        else
+        {
+            RulesText.text = rules_text;
+        }
     }
 
     void ShuffleWithin(List<string> inputList, List<string> outputList, int nb_swap) {
