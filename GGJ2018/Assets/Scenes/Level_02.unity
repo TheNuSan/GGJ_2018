@@ -222,6 +222,11 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 76.70001
       objectReference: {fileID: 0}
+    - target: {fileID: 114258003700309676, guid: 6f465853c9813ee40827f8817c33b2a7,
+        type: 2}
+      propertyPath: EnableTimer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6f465853c9813ee40827f8817c33b2a7, type: 2}
   m_IsPrefabParent: 0
@@ -835,7 +840,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb473870a7eebf746a4c9b94b603a481, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theMotionSystem: {fileID: 2076184184}
   MyInterpretError: {fileID: 292285926}
 --- !u!4 &1178796729
 Transform:

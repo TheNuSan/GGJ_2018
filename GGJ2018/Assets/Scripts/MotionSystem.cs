@@ -207,11 +207,9 @@ public class MotionSystem : MonoBehaviour {
             PlaceCharacter(Char, StartingRoom, true);
             Char.FinishMotion();
         }
-
         //LevelSys.GotToNextLevel();
-
-        StartCoroutine(FakeParty());
-
+        //StartCoroutine(FakeParty());
+        Timer.Instance.ResetTimer();
     }
 
     private IEnumerator FakeParty() {
