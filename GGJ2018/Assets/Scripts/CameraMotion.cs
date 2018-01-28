@@ -25,7 +25,7 @@ public class CameraMotion : MonoBehaviour {
 
         PartyCenter.z = 0.0f;
 
-        float ZoomSize = Mathf.Max(PartySize.x, PartySize.y)*0.5f + 1.5f;
+        float ZoomSize = Mathf.Max(PartySize.x, PartySize.y)*0.7f + 1.5f;
         transform.position = PartyCenter;
         Cam.orthographicSize = ZoomSize;
 
