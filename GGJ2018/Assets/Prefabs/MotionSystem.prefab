@@ -158,6 +158,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RoomPrefab: {fileID: 1126218404706282, guid: d525b3ffdc043ab4cb5ae4bfeef12556, type: 2}
-  ObstaclePrefabs: []
+  ObstaclePrefabs:
+  - {fileID: 1001870391591990, guid: 2e04fd01545d61342893562373e11c14, type: 2}
+  - {fileID: 1001870391591990, guid: 0869ab12b97336d49b5c00a2c9d47fed, type: 2}
+  - {fileID: 1001870391591990, guid: 912960073a4b1cd4b876216911f22994, type: 2}
   LevelSizeX: 4
   LevelSizeY: 4

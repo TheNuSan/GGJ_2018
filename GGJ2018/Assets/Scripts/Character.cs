@@ -79,7 +79,7 @@ public class Character : MonoBehaviour {
 
                 FightTime -= Time.deltaTime;
 
-                if(FightTime<0.0f) {
+                if(FightTime<=0.0f) {
                     transform.rotation = Quaternion.Euler(0f, 0f, 90f);
                 }
             } else {
@@ -135,5 +135,13 @@ public class Character : MonoBehaviour {
         if (InHand) return false;
         InHand = NewObj;
         return true;
+    }
+
+    public void EmptyHand() {
+        InHand = null;
+    }
+
+    public KeyObject GetObject() {
+        return InHand;
     }
 }

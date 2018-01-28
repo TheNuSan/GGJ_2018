@@ -7,6 +7,7 @@ using UnityEngine;
 public class ObstacleDoor : System.Object {
     public Obstacle Type = Obstacle.Door;
     public MotionDirection Direction = MotionDirection.Invalid;
+    public bool IsActive = true;
 }
 
 public class BasicRoom : MonoBehaviour {
@@ -71,6 +72,31 @@ public class BasicRoom : MonoBehaviour {
     public void Reset() {
         Characs.Clear();
         Keys.Clear();
+        for(int i=0; i<Doors.Count; ++i) {
+            Doors[i].IsActive = true;
+        }
+    }
+    
+    public bool HasObstacle(MotionDirection Dir) {
+        for (int d = 0; d < Doors.Count; ++d) {
+            ObstacleDoor CurDoor = Doors[d];
+            if (CurDoor.Direction == Dir && CurDoor.IsActive) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+     public bool RemoveObstacle(MotionDirection Dir) {
+        for (int d = 0; d < Doors.Count; ++d) {
+            ObstacleDoor CurDoor = Doors[d];
+            if (CurDoor.Direction == Dir) {
+                bool WasActive = Doors[d].IsActive;
+                Doors[d].IsActive = false;
+                return WasActive;
+            }
+        }
+        return false;
     }
 
     public KeyObject Pickup(string KeyName) {
@@ -82,6 +108,51 @@ public class BasicRoom : MonoBehaviour {
             }
         }
         return null;
+    }
+
+    void RemoveObstacleAt(int Index) {
+
+        GameObject ObsObj = null;
+        if (Index < DoorsObjects.Count) {
+            ObsObj = DoorsObjects[Index];
+        }
+
+        if (ObsObj) {
+            ObsObj.SetActive(false);
+        }
+
+        Doors[Index].IsActive = false;
+    }
+
+    public bool DisableObstacle(Obstacle ObsType, ref MotionDirection ObstacleDir) {
+
+        for (int d = 0; d < Doors.Count; ++d) {
+            ObstacleDoor Door = Doors[d];
+            if (Door.Type == ObsType) {
+
+                RemoveObstacleAt(d);
+                ObstacleDir = Door.Direction;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool DisableObstacle(MotionDirection ObstacleDir) {
+
+        for (int d = 0; d < Doors.Count; ++d) {
+            ObstacleDoor Door = Doors[d];
+            if (Door.Direction == ObstacleDir) {
+
+                RemoveObstacleAt(d);
+               
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
