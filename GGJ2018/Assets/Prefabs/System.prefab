@@ -592,7 +592,7 @@ MonoBehaviour:
   - West
   SwapRules: []
   MyInterpretError: {fileID: 114229112016528552}
-  MyActionManager: {fileID: 0}
+  MyActionManager: {fileID: 114806064653257324}
   RulesText: {fileID: 114249347849849950}
 --- !u!114 &114085903836726678
 MonoBehaviour:
