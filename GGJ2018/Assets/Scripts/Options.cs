@@ -15,10 +15,10 @@ public class Options : MonoBehaviour {
     Timer TheTimer;
     Interpret TheInterpret;
 
-    string basic_help = "" +
-    "Welcome, Master Wizard! This is dungeon of god Babble Baal. Guide your four adventurers but be careful! Some of them don't get along with each other very well... " +
-    "Guide them, and avoid the trickery of BABBLE BAAL.\n" +
-    "\n" +
+    public GameObject GlobalPanel;
+    public GameObject OK_Button;
+
+    string basic_help = "\n" +
     "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDICTIONNARY\n" +
     "\t\t\t\t\t\t\tVerbs:\t\t\t\t\t\t\t\t\t\t\t\tDirections and Objects:\n" +
     "\t\t\t\t\t\t\t- move\t\t\t\t\t\t\t\t\t\t\t\t- North\n" +
@@ -34,17 +34,22 @@ public class Options : MonoBehaviour {
     "\t\t\t\t\t\t\t\t* Form phrases like [Character][Verb][Direction/Object]\n" +
     "\t\t\t\t\t\t\t\t* The order of the words are not important.";
 
-    string level2 = "" +
-    "\n" +
-    "\t\t\t\t\t\t\t\tBabble Baal can modify the sense of the words!\n" +
-    "\n" +
-    "His power have made some words swap their meaning. Don't make mistake while you command!";
+    string level1 = "\n\n\n\n" +
+    "Welcome, Master Wizard! This is dungeon of god Babble Baal. Guide your four adventurers but be careful!\n" +
+    "Beware your dwarf companion hates the elf and the vampire can't stand the werewolf amthough she's very nice.\n\n" +
+    "Guide them, and avoid the trickery of BABBLE BAAL.\n";
 
-    string level3 = "" +
+    string level2 = "\n\n\n\n" +
     "\n" +
-    "\t\t\t\t\t\t\t\tBabble Baal can make confusion deadly!\n" +
+    "\t\t\t\t\tBabble Baal can modify the meaning of the words!\n" +
     "\n" +
-    "Using his powets, the dungeon god gives you a time limit to complete the level. Be quick and precise!";
+    "His power have made some words swap their meaning. Don't make mistake while you command your team!";
+
+    string level3 = "\n\n\n\n" +
+    "\n" +
+    "\t\t\t\t\tBabble Baal can make confusion deadly!\n" +
+    "\n" +
+    "Using his powers, the dungeon god gives you a time limit to complete the level. Be quick and precise!";
 
     void Awake()
     {
@@ -59,6 +64,8 @@ public class Options : MonoBehaviour {
         TheTimer.init(EnableTimer, TimerStart);
         TheInterpret.Shuffle(Difficulty);
 
+        //GlobalPanelImage.color = Color.black;
+
         switch (LevelNumber) {
 
             case 3:
@@ -68,12 +75,13 @@ public class Options : MonoBehaviour {
                 StartText.text = level2;
                 break;
             case 1:
-                setBasicHelp();
+                StartText.text = level1;
                 break;
 
             default:
-                setBasicHelp();
-                // start without panel
+                // start without panel    
+                GlobalPanel.SetActive(false);
+                OK_Button.SetActive(false);
                 break;
         }
     }
@@ -83,7 +91,8 @@ public class Options : MonoBehaviour {
 		
 	}
 
-    public void setBasicHelp() {
+    /*public void setBasicHelp() {
+        //GlobalPanelImage.color = new Color(128, 128, 118, 31);
         StartText.text = basic_help;
-    }
+    }*/
 }

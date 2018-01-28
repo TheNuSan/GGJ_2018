@@ -38,6 +38,10 @@ public class LevelSystem : MonoBehaviour {
 
             }
         }
+        else
+        {
+            
+        }
     }
 
     public void StartGame() {

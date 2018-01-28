@@ -302,11 +302,12 @@ public class Interpret : MonoBehaviour {
             rules_text = "Beware of rules:\n";
         foreach(string s in SwapRules) {
             rules_text += s + "\n";
-        }
+        };
 
         if (rules_text == "")
         {
-            RulesText.text = "Hmmm, everything seems normal here...";
+            RulesText.text = "Let's send a team member to the exit.\n" +
+            "Gosh, a door... Let's grab the key first.";
         }
         else
         {
