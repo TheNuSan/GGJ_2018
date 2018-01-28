@@ -780,36 +780,6 @@ Prefab:
       propertyPath: MyActionManager
       value: 
       objectReference: {fileID: 1178796728}
-    - target: {fileID: 224395219076212410, guid: 6f465853c9813ee40827f8817c33b2a7,
-        type: 2}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224395219076212410, guid: 6f465853c9813ee40827f8817c33b2a7,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224395219076212410, guid: 6f465853c9813ee40827f8817c33b2a7,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224395219076212410, guid: 6f465853c9813ee40827f8817c33b2a7,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224395219076212410, guid: 6f465853c9813ee40827f8817c33b2a7,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 686.7295
-      objectReference: {fileID: 0}
-    - target: {fileID: 224395219076212410, guid: 6f465853c9813ee40827f8817c33b2a7,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -346.05
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6f465853c9813ee40827f8817c33b2a7, type: 2}
   m_IsPrefabParent: 0
