@@ -599,23 +599,13 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4152607450664266, guid: 6f465853c9813ee40827f8817c33b2a7, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114045708070689880, guid: 6f465853c9813ee40827f8817c33b2a7,
         type: 2}
       propertyPath: MyActionManager
       value: 
       objectReference: {fileID: 1178796728}
-    - target: {fileID: 224425678771027478, guid: 6f465853c9813ee40827f8817c33b2a7,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 641.5293
-      objectReference: {fileID: 0}
-    - target: {fileID: 224989800419884336, guid: 6f465853c9813ee40827f8817c33b2a7,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 300.5996
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6f465853c9813ee40827f8817c33b2a7, type: 2}
   m_IsPrefabParent: 0

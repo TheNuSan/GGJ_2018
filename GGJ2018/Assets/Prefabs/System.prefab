@@ -214,7 +214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1636072399499662
 GameObject:
   m_ObjectHideFlags: 1
@@ -335,7 +335,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1794809002544844
 GameObject:
   m_ObjectHideFlags: 1
@@ -732,6 +732,17 @@ MonoBehaviour:
       - m_Target: {fileID: 1754088896049132}
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 114405420630408732}
+        m_MethodName: setBasicHelp
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1197,9 +1208,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e2b31e8ef23584190a0586ffa6f86a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LevelNumber: 1
   Difficulty: 0
   EnableTimer: 0
   TimerStart: 180
+  StartText: {fileID: 114488441747030174}
 --- !u!114 &114488428895708726
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1248,10 +1261,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 40
+    m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 4
+    m_MinSize: 3
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -1259,14 +1272,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDICTIONNARY\n\t\t\t\t\t\t\t\tVerbs:\t\t\t\t\t\t\t\t\t\t\t\tDirections
-    and Objects:\r\n\t\t\t\t\t\t\t\t- move\t\t\t\t\t\t\t\t\t\t\t\t- North\r\n\t\t\t\t\t\t\t\t-
-    pick\t\t\t\t\t\t\t\t\t\t\t\t- South\r\n\t\t\t\t\t\t\t\t- use\t\t\t\t\t\t\t\t\t\t\t\t-
-    Est\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t- West\r\n\t\t\t\t\t\t\t\tCharacters:\r\n\t\t\t\t\t\t\t\t-
-    Dwarf\t\t\t\t\t\t\t\t\t\t\t- Key\r\n\t\t\t\t\t\t\t\t- Elf\t\t\t\t\t\t\t\t\t\t\t\t\t-
-    Shovel\r\n\t\t\t\t\t\t\t\t- Vampire\t\t\t\t\t\t\t\t\t\t\t- Hammer\r\n\t\t\t\t\t\t\t\t-
-    Werewolf\r\n\r\n\t\t\t\t\t\t\t\t* Form phrases like [Character][Verb][Direction/Object]\r\n\t\t\t\t\t\t\t\t*
-    The order of the words are not important."
+  m_Text: BABBLE BAAL
 --- !u!114 &114497194718288592
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1721,8 +1727,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.00000095367}
-  m_SizeDelta: {x: 1593.9, y: 681.8}
+  m_AnchoredPosition: {x: 0.00005626639, y: -0.000020981002}
+  m_SizeDelta: {x: 1452.8, y: 714.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224425678771027478
 RectTransform:
@@ -1740,7 +1746,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 658, y: 99}
+  m_AnchoredPosition: {x: 641.5293, y: 99}
   m_SizeDelta: {x: 1245.3, y: 76.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224580663545759980
@@ -1951,8 +1957,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000022888, y: 0.0000019073}
-  m_SizeDelta: {x: 1737.9, y: 817}
+  m_AnchoredPosition: {x: 1.8, y: 0.0000019073}
+  m_SizeDelta: {x: 1851.6, y: 817}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224989800419884336
 RectTransform:
@@ -1970,6 +1976,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 300.5996, y: 308.35}
+  m_AnchoredPosition: {x: 300.5996, y: 308.3496}
   m_SizeDelta: {x: 529.84, y: 132.1}
   m_Pivot: {x: 0.5, y: 0.5}
