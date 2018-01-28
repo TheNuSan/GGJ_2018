@@ -36,7 +36,7 @@ public class Options : MonoBehaviour {
 
     string level1 = "\n\n\n\n" +
     "Welcome, Master Wizard! This is dungeon of god Babble Baal. Guide your four adventurers but be careful!\n" +
-    "Beware your dwarf companion hates the elf and the vampire can't stand the werewolf amthough she's very nice.\n\n" +
+    "Beware, your dwarf companion hates the elf and the vampire can't stand the werewolf, although she's very nice.\n\n" +
     "Guide them, and avoid the trickery of BABBLE BAAL.\n";
 
     string level2 = "\n\n\n\n" +
