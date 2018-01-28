@@ -157,6 +157,37 @@ Prefab:
       propertyPath: MyActionManager
       value: 
       objectReference: {fileID: 1178796728}
+    - target: {fileID: 114488428895708726, guid: 6f465853c9813ee40827f8817c33b2a7,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4295a9bda5faf174d9a8c3c87abdde3a,
+        type: 3}
+    - target: {fileID: 114488428895708726, guid: 6f465853c9813ee40827f8817c33b2a7,
+        type: 2}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114488428895708726, guid: 6f465853c9813ee40827f8817c33b2a7,
+        type: 2}
+      propertyPath: m_FillCenter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114488428895708726, guid: 6f465853c9813ee40827f8817c33b2a7,
+        type: 2}
+      propertyPath: m_PreserveAspect
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224580663545759980, guid: 6f465853c9813ee40827f8817c33b2a7,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 114366182034373738, guid: 6f465853c9813ee40827f8817c33b2a7,
+        type: 2}
+      propertyPath: m_CaretWidth
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6f465853c9813ee40827f8817c33b2a7, type: 2}
   m_IsPrefabParent: 0
@@ -783,9 +814,3 @@ Transform:
   m_PrefabParentObject: {fileID: 4909634569388966, guid: d525b3ffdc043ab4cb5ae4bfeef12556,
     type: 2}
   m_PrefabInternal: {fileID: 1932998738}
---- !u!114 &2076184184 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114862828281024926, guid: 4bca955465848cf428f23813bf9ca1ff,
-    type: 2}
-  m_PrefabInternal: {fileID: 1104756958}
-  m_Script: {fileID: 11500000, guid: 3ee9c3a44b7ea1d4ea3b906bc6e1bd3f, type: 3}
