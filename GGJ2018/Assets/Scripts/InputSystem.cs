@@ -8,15 +8,15 @@ using System.Text.RegularExpressions;
 public class InputSystem : MonoBehaviour {
 
     public InputField TextField;
-    public Interpret myInterpret;
+    Interpret TheInterpret;
     public InterpretError myInterpretError;
     
 
     // Use this for initialization
     void Start () {
-        myInterpret.init();
+        TheInterpret = Interpret.Instance;
         //myInterpret.Shuffle(0);
-        myInterpret.Shuffle(3);
+        //myInterpret.Shuffle(3);
         TextField.Select();
         TextField.ActivateInputField();
     }
@@ -40,7 +40,7 @@ public class InputSystem : MonoBehaviour {
             return;
         }
 
-        if (myInterpret.DoInterpret(words))
+        if (TheInterpret.DoInterpret(words))
             TextField.text = "";
 
         //TextField.Select();

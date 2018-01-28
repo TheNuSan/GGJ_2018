@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Interpret : MonoBehaviour {
 
+    public static Interpret Instance;
     public static int MinWords = 3;
     
     public enum wordType {
@@ -30,14 +31,22 @@ public class Interpret : MonoBehaviour {
     public ActionManager MyActionManager;
     public Text RulesText;
 
+    void Awake()
+    {
+        Instance = this;
+        init();
+    }
+
     // Use this for initialization
     void Start()
     {
-
+        
     }
 
     public void init() {
         VerbsBase.Add("move");
+        VerbsBase.Add("pick");
+        VerbsBase.Add("use");
 
         PeopleBase.Add("Dwarf");
         PeopleBase.Add("Elf");
@@ -53,6 +62,9 @@ public class Interpret : MonoBehaviour {
         ThingsBase.Add("South");
         ThingsBase.Add("East");
         ThingsBase.Add("West");
+        ThingsBase.Add("Key");
+        ThingsBase.Add("Shovel");
+        ThingsBase.Add("Hammer");
 
         Verbs = new List<string>(VerbsBase);
         People = new List<string>(PeopleBase);
@@ -136,8 +148,11 @@ public class Interpret : MonoBehaviour {
             ordered_words.Insert(0, verb);
             ordered_words.Insert(0, person);
 
-            // call action
-            res = MyActionManager.PerformAction(ordered_words);
+            if (CheckConsistency(ordered_words))
+            {
+                // call action
+                res = MyActionManager.PerformAction(ordered_words);
+            }
             
             if (res)
                 MyInterpretError.Success(person);
@@ -174,6 +189,32 @@ public class Interpret : MonoBehaviour {
         return (int)res;
     }
 
+    bool CheckConsistency(List<string> command) {
+        bool res = false;
+        string verb = command[1];
+        string thing = command[2];
+
+        switch (verb) {
+
+            case "pick":
+            case "use":
+                res = ThingsBase.IndexOf(thing) >= ThingsBase.IndexOf("Key");
+                //if (!res)
+                    
+                break;
+
+            case "move":
+            default:
+                res = ThingsBase.IndexOf(thing) <= ThingsBase.IndexOf("West");
+                //if (!res)
+
+                break;
+        }
+
+        return res;
+    }
+
+
     public void Shuffle(int difficulty) {
 
         Verbs = new List<string>(VerbsBase);
@@ -190,32 +231,53 @@ public class Interpret : MonoBehaviour {
 
         switch (difficulty) {
 
-            case 5:
-                // Everything is fucked up
-                //break;
+            case 9:
+                // Everything is fucked up like hell
+                ShuffleWithin(ThingsBase, Things, 3);
+                ShuffleTroughout(PeopleBase, VerbsBase, People, Verbs, 3);
+                break;
 
-            case 4:
+            case 8:
+                // Everything is even more fucked up
+                ShuffleWithin(ThingsBase, Things, 3);
+                ShuffleBetween(PeopleBase, VerbsBase, People, Verbs, 2);
+                break;
+
+            case 7:
+                // Everything is fucked up
+                ShuffleWithin(VerbsBase, Verbs, 1);
+                ShuffleTroughout(PeopleBase, ThingsBase, People, Things, 3);
+                break;
+            
+            case 6:    
                 // Peoples are mixed with Things
-                //ShuffleBetween(PeopleBase, ThingsBase, People, Things, 3);
                 ShuffleTroughout(PeopleBase, ThingsBase, People, Things, 3);
                 break;
 
-            case 3:
-            // Verbs are shuffled together
-            // ShuffleWithin(VerbsBase,Verbs);
+            case 5:
+                // People are swapped with things
                 ShuffleBetween(PeopleBase, ThingsBase, People, Things, 3);
                 break;
 
-            case 2:
+            case 4:
+                // Two verbs are swapped, and things are shuffled together
+                ShuffleWithin(VerbsBase, Verbs, 1);
+                ShuffleWithin(ThingsBase, Things, 2);
+                break;
+
+            case 3:
                 // Things are shuffled together
                 ShuffleWithin(ThingsBase, Things, 2);
                 break;
 
+            case 2:
+                // Two verbs are swapped
+                ShuffleWithin(VerbsBase,Verbs, 1);
+                break;
+
             case 1:
-                // People are shuffled together
-                //ShuffleWithin(PeopleBase, People, 1);
-                //ShuffleWithin(PeopleBase, People, 2);
-                ShuffleWithin(PeopleBase, People, 3);
+                // Two people are swapped
+                ShuffleWithin(PeopleBase, People, 1);
                 break;
 
             case 0:
@@ -235,7 +297,9 @@ public class Interpret : MonoBehaviour {
         //Debug.Log("SwapRules");
         //Debug.Log(PrintedList(SwapRules));
 
-        string rules_text = "Beware:\n";
+        string rules_text = "";
+        if (SwapRules.Count > 0)
+            rules_text = "Beware of rules:\n";
         foreach(string s in SwapRules) {
             rules_text += s + "\n";
         }

@@ -783,9 +783,3 @@ Transform:
   m_PrefabParentObject: {fileID: 4909634569388966, guid: d525b3ffdc043ab4cb5ae4bfeef12556,
     type: 2}
   m_PrefabInternal: {fileID: 1932998738}
---- !u!114 &2076184184 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114862828281024926, guid: 4bca955465848cf428f23813bf9ca1ff,
-    type: 2}
-  m_PrefabInternal: {fileID: 1104756958}
-  m_Script: {fileID: 11500000, guid: 3ee9c3a44b7ea1d4ea3b906bc6e1bd3f, type: 3}
