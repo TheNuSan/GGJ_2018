@@ -48,4 +48,7 @@ public class InputSystem : MonoBehaviour {
     }
 
     
+    public void QuitGame() {
+        Application.Quit();
+    }
 }

@@ -185,7 +185,7 @@ public class MotionSystem : MonoBehaviour {
                     if(RoomObj) {
                         Vector3 Offset = GetObstacleOffset(CurDoor.Direction);
                         float Rot = GetObstacleRotation(CurDoor.Direction);
-                        RoomObj.transform.position = Room.transform.position + Offset - Vector3.forward * 2.0f;
+                        RoomObj.transform.position = Room.transform.position + Offset - Vector3.forward * 0.99f;
                         RoomObj.transform.rotation = Quaternion.Euler(0.0f, 0.0f, Rot);
                         RoomObj.gameObject.SetActive(true);
                     }
@@ -575,7 +575,7 @@ public class MotionSystem : MonoBehaviour {
     }
 
     public void SuccesMission() {
-        if(!IsSuccesMission) {
+        if(!IsSuccesMission && !IsFailedMission) {
             IsSuccesMission = true;
             StartCoroutine(NextLevelTimer());
         }

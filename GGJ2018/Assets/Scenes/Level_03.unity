@@ -226,12 +226,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4909634569388966, guid: d525b3ffdc043ab4cb5ae4bfeef12556,
     type: 2}
   m_PrefabInternal: {fileID: 111085480}
---- !u!114 &292285926 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114229112016528552, guid: 6f465853c9813ee40827f8817c33b2a7,
-    type: 2}
-  m_PrefabInternal: {fileID: 97818503}
-  m_Script: {fileID: 11500000, guid: 17294b6bd05341240ac19120647a0cf1, type: 3}
 --- !u!1001 &368269730
 Prefab:
   m_ObjectHideFlags: 0
@@ -804,47 +798,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d525b3ffdc043ab4cb5ae4bfeef12556, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1178796727
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1178796729}
-  - component: {fileID: 1178796728}
-  m_Layer: 0
-  m_Name: ActionSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1178796728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1178796727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb473870a7eebf746a4c9b94b603a481, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MyInterpretError: {fileID: 292285926}
---- !u!4 &1178796729
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1178796727}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 387.81204, y: 124.73729, z: -17.875}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1329020360
 GameObject:
   m_ObjectHideFlags: 0
@@ -887,7 +840,7 @@ Transform:
   - {fileID: 940157007}
   - {fileID: 581314822}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1460159498
 Prefab:

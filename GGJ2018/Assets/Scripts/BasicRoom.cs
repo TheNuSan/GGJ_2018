@@ -63,7 +63,8 @@ public class BasicRoom : MonoBehaviour {
         }
 
         if (RoomType == Type.Ending) {
-            if(Characs.Count == MotionSystem.Instance.GetCharacterCount()) {
+            //if(Characs.Count == MotionSystem.Instance.GetCharacterCount()) { // ALl characters
+            if (Characs.Count >= 1) { // First character in the room
                 MotionSystem.Instance.SuccesMission();
             }
         }
