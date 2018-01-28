@@ -552,7 +552,7 @@ public class MotionSystem : MonoBehaviour {
     }
 
     public void SuccesMission() {
-        if(!IsSuccesMission) {
+        if(!IsSuccesMission && !IsFailedMission) {
             IsSuccesMission = true;
             StartCoroutine(NextLevelTimer());
         }
