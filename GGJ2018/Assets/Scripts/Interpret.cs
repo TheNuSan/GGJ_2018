@@ -199,15 +199,15 @@ public class Interpret : MonoBehaviour {
             case "pick":
             case "use":
                 res = ThingsBase.IndexOf(thing) >= ThingsBase.IndexOf("Key");
-                //if (!res)
-                    
+                if (!res)
+                    MyInterpretError.InconsistentAction(command[0], thing);
                 break;
 
             case "move":
             default:
                 res = ThingsBase.IndexOf(thing) <= ThingsBase.IndexOf("West");
-                //if (!res)
-
+                if (!res)
+                    MyInterpretError.InconsistentDirection(command[0], thing);
                 break;
         }
 
