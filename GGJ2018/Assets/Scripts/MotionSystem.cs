@@ -33,6 +33,7 @@ public class MotionSystem : MonoBehaviour {
 
     GameObject LevelMaster;
     LevelSystem LevelSys;
+    InterpretError TheInterpretError;
 
     void Awake() {
         Instance = this;
@@ -40,6 +41,7 @@ public class MotionSystem : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        TheInterpretError = InterpretError.Instance;
         LevelSys = GetComponent<LevelSystem>();
         GameObject[] KeyList = GameObject.FindGameObjectsWithTag("KeyObject");
         AllKeys = new List<KeyObject>();
@@ -292,7 +294,7 @@ public class MotionSystem : MonoBehaviour {
         }
         
         Timer.Instance.ResetTimer();
-        StartCoroutine(FakeParty());
+        //StartCoroutine(FakeParty());
     }
 
     private IEnumerator FakeParty() {
@@ -446,11 +448,24 @@ public class MotionSystem : MonoBehaviour {
     public bool PickUpObject(string CharName, string KeyName) {
 
         Character Char = GetCharacter(CharName);
-        if (!Char || !Char.CurrentRoom) return false;
-        if (!Char.CanPickUp()) return false;
+        if (!Char || !Char.CurrentRoom)
+        {
+            TheInterpretError.NoObject(CharName, KeyName);
+            return false;
+        }
+        if (!Char.CanPickUp())
+        {
+            KeyObject myObj = Char.GetObject();
+            TheInterpretError.OtherObject(CharName, KeyName, myObj.KeyName);
+            return false;
+        }
         BasicRoom CurrentRoom = Char.CurrentRoom;
         KeyObject Key = CurrentRoom.Pickup(KeyName);
-        if (!Key) return false;
+        if (!Key)
+        {
+            TheInterpretError.NoObject(CharName, KeyName);
+            return false;
+        }
 
         Char.PickUp(Key);
         return true;
@@ -461,8 +476,13 @@ public class MotionSystem : MonoBehaviour {
         Character Char = GetCharacter(CharName);
         if (!Char || !Char.CurrentRoom) return false;
         KeyObject Obj = Char.GetObject();
-        if (!Obj) return false; // nothing in hand
+        if (!Obj)
+        {
+            TheInterpretError.NoPosess(CharName, KeyName); 
+            return false; // nothing in hand
+        }
         if (!string.Equals(Obj.KeyName, KeyName, StringComparison.CurrentCultureIgnoreCase)) {
+            TheInterpretError.NoPosess(CharName, KeyName);
             return false; // not the correct object
         }
 
@@ -482,7 +502,10 @@ public class MotionSystem : MonoBehaviour {
                     OtherRoom.DisableObstacle(GetOpositeDirection(ObsDir));
                 }
             }
+            return true;
         }
+
+        TheInterpretError.NoUse(CharName, KeyName);
         return false;
     }
 

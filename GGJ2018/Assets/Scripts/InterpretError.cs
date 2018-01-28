@@ -5,10 +5,16 @@ using UnityEngine.UI;
 
 public class InterpretError : MonoBehaviour {
 
+    public static InterpretError Instance;
     public Text MessageText;
 
-	// Use this for initialization
-	void Start () {
+    void Awake()
+    {
+        Instance = this;
+    }
+
+    // Use this for initialization
+    void Start () {
         MessageText.text = "Welcome to the dungeon";
     }
 	
@@ -225,6 +231,30 @@ public class InterpretError : MonoBehaviour {
         }
     }
 
+    public void OtherObject(string character, string thing, string myThing)
+    {
+        switch (character.ToLower())
+        {
+            case "dwarf":
+                MessageText.text = character.ToUpper() + ": I can't carry both the" + myThing + " AND the " + thing + "!";
+                break;
+
+            case "elf":
+                MessageText.text = character.ToUpper() + ": I already have the " + myThing + ", maybe I could pick up the " + thing + " later.";
+                break;
+
+            case "vampire":
+                MessageText.text = character.ToUpper() + ": Let somone else carry the " + thing + ", I'll manage the " + myThing + ".";
+                break;
+
+            case "werewolf":
+            default:
+                MessageText.text = character.ToUpper() + ": Growl! I have a " + myThing + ". I can't take the" + thing + " now.";
+                break;
+        }
+    }
+
+
     public void NoPosess(string character, string thing)
     {
         switch (character.ToLower())
@@ -243,7 +273,7 @@ public class InterpretError : MonoBehaviour {
 
             case "werewolf":
             default:
-                MessageText.text = character.ToUpper() + ": Which " + thing + "? I don't have it!";
+                MessageText.text = character.ToUpper() + ": Growl! Which " + thing + "? I don't have it!";
                 break;
         }
     }
@@ -254,15 +284,15 @@ public class InterpretError : MonoBehaviour {
         switch (character.ToLower())
         {
             case "dwarf":
-                MessageText.text = character.ToUpper() + ": I can't use the " + thing + "!";
+                MessageText.text = character.ToUpper() + ": I can't use the " + thing + " here!";
                 break;
 
             case "elf":
-                MessageText.text = character.ToUpper() + ": It is not possible for me to use the " + thing + ".";
+                MessageText.text = character.ToUpper() + ": It is not possible for me to use the " + thing + " here.";
                 break;
 
             case "vampire":
-                MessageText.text = character.ToUpper() + ": The " + thing + " you said? I'm not entitled to do this.";
+                MessageText.text = character.ToUpper() + ": I'm afraid the " + thing + " is of no use in there.";
                 break;
 
             case "werewolf":
@@ -271,4 +301,5 @@ public class InterpretError : MonoBehaviour {
                 break;
         }
     }
+
 }
