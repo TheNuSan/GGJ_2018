@@ -18,10 +18,12 @@ public class CameraMotion : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        Vector3 PartyCenter = Vector3.zero;
+        Vector3 PartyCenter = transform.position;
         Vector3 PartySize = Vector3.one;
 
         MS.GetCamPos(ref PartyCenter, ref PartySize);
+
+        PartyCenter.z = 0.0f;
 
         float ZoomSize = Mathf.Max(PartySize.x, PartySize.y)*0.5f + 1.5f;
         transform.position = PartyCenter;
