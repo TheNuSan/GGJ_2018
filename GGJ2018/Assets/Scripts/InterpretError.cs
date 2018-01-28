@@ -68,6 +68,52 @@ public class InterpretError : MonoBehaviour {
         MessageText.text = "This doesn't make any sense. Are you alright?";
     }
 
+    public void InconsistentDirection(string character, string thing) {
+        switch (character.ToLower())
+        {
+            case "dwarf":
+                MessageText.text = character.ToUpper() + ": What? \"" + thing + "\" is not even a direction!";
+                break;
+
+            case "elf":
+                MessageText.text = character.ToUpper() + ": I can't go to direction \"" + thing + "\".";
+                break;
+
+            case "vampire":
+                MessageText.text = character.ToUpper() + ": I believe \"" + thing + "\" is not the way.";
+                break;
+
+            case "werewolf":
+            default:
+                MessageText.text = character.ToUpper() + ": Which way is \"" + thing + "\"?";
+                break;
+        }
+    }
+
+    public void InconsistentAction(string character, string thing)
+    {
+        switch (character.ToLower())
+        {
+            case "dwarf":
+                MessageText.text = character.ToUpper() + ": What? \"" + thing + "\" is not an object I use!";
+                break;
+
+            case "elf":
+                MessageText.text = character.ToUpper() + ": I'm afraid it is not possible to grab \"" + thing + "\".";
+                break;
+
+            case "vampire":
+                MessageText.text = character.ToUpper() + ": It is not like I had \"" + thing + "\" within grasp.";
+                break;
+
+            case "werewolf":
+            default:
+                MessageText.text = character.ToUpper() + ": I can't do anything with \"" + thing + "\".";
+                break;
+        }
+    }
+
+
     public void MoveError(string character, string direction)
     {
         switch (character.ToLower())

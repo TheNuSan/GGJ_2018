@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class Timer : MonoBehaviour {
 
     public static Timer Instance;
-    public bool EnableTimer = false;
-    public float StartTime = 180.0F;
+    bool EnableTimer = false;
+    float StartTime = 180.0F;
 
     public Text CountText;
 
@@ -33,6 +33,12 @@ public class Timer : MonoBehaviour {
             CountText.text = "∞";
         }
 
+    }
+
+    public void init(bool enable, float start)
+    {
+        EnableTimer = enable;
+        StartTime = start;
     }
 
     public void ResetTimer()
