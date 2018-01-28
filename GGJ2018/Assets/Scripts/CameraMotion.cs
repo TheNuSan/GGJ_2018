@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraMotion : MonoBehaviour {
 
+    public GameObject Background;
+
     MotionSystem MS;
     Camera Cam;
 
@@ -25,5 +27,7 @@ public class CameraMotion : MonoBehaviour {
         transform.position = PartyCenter;
         Cam.orthographicSize = ZoomSize;
 
+        float BackScale = ZoomSize / 5.0f;
+        Background.transform.localScale = new Vector3(BackScale, BackScale, BackScale);
     }
 }
