@@ -160,12 +160,12 @@ Prefab:
     - target: {fileID: 114405420630408732, guid: 6f465853c9813ee40827f8817c33b2a7,
         type: 2}
       propertyPath: Difficulty
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114405420630408732, guid: 6f465853c9813ee40827f8817c33b2a7,
         type: 2}
       propertyPath: EnableTimer
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114405420630408732, guid: 6f465853c9813ee40827f8817c33b2a7,
         type: 2}
