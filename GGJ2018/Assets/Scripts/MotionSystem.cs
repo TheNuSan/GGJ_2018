@@ -20,6 +20,7 @@ public class MotionSystem : MonoBehaviour {
     
     List<Character> Characters;
     List<List<BasicRoom>> Rooms;
+    List<KeyObject> AllKeys;
 
     BasicRoom StartingRoom;
     BasicRoom EndingRoom;
@@ -40,7 +41,11 @@ public class MotionSystem : MonoBehaviour {
     // Use this for initialization
     void Start () {
         LevelSys = GetComponent<LevelSystem>();
-
+        GameObject[] KeyList = GameObject.FindGameObjectsWithTag("KeyObject");
+        AllKeys = new List<KeyObject>();
+        for( int i=0; i<KeyList.Length; ++i) {
+            AllKeys.Add(KeyList[i].GetComponent<KeyObject>());
+        }
         InitLevel();
     }
 
@@ -113,6 +118,52 @@ public class MotionSystem : MonoBehaviour {
                     EndingRoom = Room;
                 }
 
+                Rooms[Room.PosX][Room.PosY] = Room;
+            }
+        }
+
+        // ensure both side have doors
+        for (int i = 0; i < LevelSizeX; ++i) {
+            for (int j = 0; j < LevelSizeY; ++j) {
+                BasicRoom Room = Rooms[i][j];
+                if (!Room) continue;
+
+                for (int d = 0; d < Room.Doors.Count; ++d) {
+                    ObstacleDoor CurDoor = Room.Doors[d];
+                    int OffsetX = 0;
+                    int OffsetY = 0;
+                    GetDirectionOffset(CurDoor.Direction, ref OffsetX, ref OffsetY);
+
+                    int NewCaseX = Room.PosX + OffsetX;
+                    int NewCaseY = Room.PosY + OffsetY;
+
+                    if (!ValidGridPos(NewCaseX, NewCaseY)) {
+                        continue;
+                    }
+
+                    BasicRoom OtherRoom = Rooms[NewCaseX][NewCaseY];
+                    if (!OtherRoom) {
+                        continue;
+                    }
+
+                    MotionDirection Oposite = GetOpositeDirection(CurDoor.Direction);
+                    if(!OtherRoom.HasObstacle(Oposite)) {
+                        ObstacleDoor NewDoor = new ObstacleDoor();
+                        NewDoor.Direction = Oposite;
+                        NewDoor.IsActive = true;
+                        NewDoor.Type = CurDoor.Type;
+                        OtherRoom.Doors.Add(NewDoor);
+                    }
+                }
+            }
+        }
+
+        // realy create doors
+        for (int i = 0; i < LevelSizeX; ++i) {
+            for (int j = 0; j < LevelSizeY; ++j) {
+                BasicRoom Room = Rooms[i][j];
+                if (!Room) continue;
+
                 for (int d=0; d<Room.Doors.Count; ++d) {
                     ObstacleDoor CurDoor = Room.Doors[d];
                     GameObject RoomObj = null;
@@ -130,21 +181,20 @@ public class MotionSystem : MonoBehaviour {
                         }
                     }
                     if(RoomObj) {
-                        RoomObj.transform.position = new Vector3();
+                        Vector3 Offset = GetObstacleOffset(CurDoor.Direction);
+                        float Rot = GetObstacleRotation(CurDoor.Direction);
+                        RoomObj.transform.position = Room.transform.position + Offset - Vector3.forward * 2.0f;
+                        RoomObj.transform.rotation = Quaternion.Euler(0.0f, 0.0f, Rot);
+                        RoomObj.gameObject.SetActive(true);
                     }
                 }
 
-                Rooms[Room.PosX][Room.PosY] = Room;
             }
         }
-
-        /*Vector3 GetObstacleOffset(MotionDirection Dir) {
-            if()
-        }*/
-
-        GameObject[] KeyList = GameObject.FindGameObjectsWithTag("KeyObject");
-        for (int i = 0; i < KeyList.Length; ++i) {
-            KeyObject Key = KeyList[i].GetComponent<KeyObject>();
+        
+        
+        for (int i = 0; i < AllKeys.Count; ++i) {
+            KeyObject Key = AllKeys[i];
             if (Key) {
                 Key.Reset();
 
@@ -168,6 +218,39 @@ public class MotionSystem : MonoBehaviour {
                 OwnerRoom.Keys.Add(Key);
             }
         }
+    }
+    
+    void GetDirectionOffset(MotionDirection Dir, ref int i, ref int j) {
+
+        switch (Dir) {
+            case MotionDirection.North: j += 1; break;
+            case MotionDirection.South: j += -1; break;
+            case MotionDirection.East: i += 1; break;
+            case MotionDirection.West: i += -1; break;
+            case MotionDirection.Invalid: break;
+        }
+    }
+
+    MotionDirection GetOpositeDirection(MotionDirection Dir) {
+        if (Dir == MotionDirection.North) return MotionDirection.South;
+        if (Dir == MotionDirection.South) return MotionDirection.North;
+        if (Dir == MotionDirection.East) return MotionDirection.West;
+        if (Dir == MotionDirection.West) return MotionDirection.East;
+        return MotionDirection.Invalid;
+    }
+    
+    Vector3 GetObstacleOffset(MotionDirection Dir) {
+        float ObsDist = 1.0f;
+        if (Dir == MotionDirection.North) return Vector3.up * ObsDist;
+        if (Dir == MotionDirection.South) return Vector3.down * ObsDist;
+        if (Dir == MotionDirection.East) return Vector3.right * ObsDist;
+        if (Dir == MotionDirection.West) return Vector3.left * ObsDist;
+        return Vector3.zero;
+    }
+
+    float GetObstacleRotation(MotionDirection Dir) {
+        if (Dir == MotionDirection.North || Dir == MotionDirection.South) return 0.0f;
+        return 90.0f;
     }
 
     void InitLevel() {
@@ -207,9 +290,9 @@ public class MotionSystem : MonoBehaviour {
             PlaceCharacter(Char, StartingRoom, true);
             Char.FinishMotion();
         }
-        //LevelSys.GotToNextLevel();
-        //StartCoroutine(FakeParty());
+        
         Timer.Instance.ResetTimer();
+        StartCoroutine(FakeParty());
     }
 
     private IEnumerator FakeParty() {
@@ -223,42 +306,28 @@ public class MotionSystem : MonoBehaviour {
         PickUpObject("ELF", "key");
 
         yield return new WaitForSeconds(1f);
+        UseObject("ELF", "key");
+
+        yield return new WaitForSeconds(1f);
         MoveCharacterAlongDirection("ELF", "north");
 
         yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("Dwarf", "North");
-
-        /*
+        MoveCharacterAlongDirection("werewolf", "north");
 
         yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("Dwarf", "North");
+        MoveCharacterAlongDirection("werewolf", "east");
 
         yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("Dwarf", "North");
+        PickUpObject("werewolf", "shovel");
 
         yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("Elf", "East");
+        MoveCharacterAlongDirection("werewolf", "west");
 
         yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("Elf", "North");
+        UseObject("werewolf", "shovel");
 
         yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("Elf", "North");
-
-        yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("Werewolf", "North");
-
-        yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("Vampire", "North");
-
-        yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("Werewolf", "North");
-
-        yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("Vampire", "North");
-
-    */
-
+        MoveCharacterAlongDirection("werewolf", "north");
     }
 
     public Character GetCharacter(string CharName) {
@@ -281,6 +350,16 @@ public class MotionSystem : MonoBehaviour {
         return MotionDirection.Invalid;
     }
 
+    public Obstacle GetObstacle(string ObName) {
+        foreach (Obstacle Ob in Enum.GetValues(typeof(Obstacle))) {
+            string EnumName = Enum.GetName(typeof(Obstacle), Ob);
+            if (string.Equals(EnumName, ObName, StringComparison.CurrentCultureIgnoreCase)) {
+                return Ob;
+            }
+        }
+        return Obstacle.Invalid;
+    }
+
     public bool MoveCharacterAlongDirection(string CharName, string DirName) {
         //Debug.Log("Try move " + CharName + " to " + DirName);
         Character Char = GetCharacter(CharName);
@@ -296,32 +375,34 @@ public class MotionSystem : MonoBehaviour {
         return true;
     }
 
+    public BasicRoom GetRoomInDirection(BasicRoom Room, MotionDirection Dir) {
+        int OffsetX = 0;
+        int OffsetY = 0;
+        GetDirectionOffset(Dir, ref OffsetX, ref OffsetY);
+
+        int NewCaseX = Room.PosX + OffsetX;
+        int NewCaseY = Room.PosY + OffsetY;
+
+        if (!ValidGridPos(NewCaseX, NewCaseY)) {
+            return null;
+        }
+
+        return Rooms[NewCaseX][NewCaseY];
+
+    }
+
     public bool MoveCharacterAlongDirection(Character Char, MotionDirection Dir) {
 
         if(!CanRecieveCommand()) {
             return false;
         }
-
-        int OffsetX = 0;
-        int OffsetY = 0;
-        switch(Dir) {
-            case MotionDirection.North: OffsetY = 1; break;
-            case MotionDirection.South: OffsetY = -1; break;
-            case MotionDirection.East: OffsetX = 1; break;
-            case MotionDirection.West: OffsetX = -1; break;
-            case MotionDirection.Invalid: return false; break;
-        }
-
-        BasicRoom Room = Char.CurrentRoom;
-        int NewCaseX = Room.PosX + OffsetX;
-        int NewCaseY = Room.PosY + OffsetY;
-
-        if(!ValidGridPos(NewCaseX, NewCaseY)) {
+        
+        BasicRoom OtherRoom = GetRoomInDirection(Char.CurrentRoom, Dir);
+        if(!OtherRoom) {
             return false;
         }
 
-        BasicRoom OtherRoom = Rooms[NewCaseX][NewCaseY];
-        if(!OtherRoom) {
+        if(Char.CurrentRoom.HasObstacle(Dir)) {
             return false;
         }
 
@@ -374,7 +455,37 @@ public class MotionSystem : MonoBehaviour {
         Char.PickUp(Key);
         return true;
     }
-    
+
+    public bool UseObject(string CharName, string KeyName) {
+
+        Character Char = GetCharacter(CharName);
+        if (!Char || !Char.CurrentRoom) return false;
+        KeyObject Obj = Char.GetObject();
+        if (!Obj) return false; // nothing in hand
+        if (!string.Equals(Obj.KeyName, KeyName, StringComparison.CurrentCultureIgnoreCase)) {
+            return false; // not the correct object
+        }
+
+        BasicRoom CurrentRoom = Char.CurrentRoom;
+        MotionDirection ObsDir = MotionDirection.Invalid;
+        if(CurrentRoom.DisableObstacle(Obj.WillOpen, ref ObsDir)) {
+            //Obj.gameObject.SetActive(false);
+            Char.EmptyHand();
+
+            // Key anim
+            Vector3 Offset = GetObstacleOffset(ObsDir);
+            Obj.Use(CurrentRoom.transform.position + Offset - Vector3.forward * 3.0f);
+
+            if (ObsDir != MotionDirection.Invalid) {
+                BasicRoom OtherRoom = GetRoomInDirection(CurrentRoom, ObsDir);
+                if (OtherRoom) {
+                    OtherRoom.DisableObstacle(GetOpositeDirection(ObsDir));
+                }
+            }
+        }
+        return false;
+    }
+
     private void StartMotionTimer() {
         NeedAfterMotionCheck = true;
         MotionTimer = 0.7f;
