@@ -240,7 +240,7 @@ public class MotionSystem : MonoBehaviour {
     }
     
     Vector3 GetObstacleOffset(MotionDirection Dir) {
-        float ObsDist = 0.9f;
+        float ObsDist = 1.0f;
         if (Dir == MotionDirection.North) return Vector3.up * ObsDist;
         if (Dir == MotionDirection.South) return Vector3.down * ObsDist;
         if (Dir == MotionDirection.East) return Vector3.right * ObsDist;
@@ -318,13 +318,13 @@ public class MotionSystem : MonoBehaviour {
         MoveCharacterAlongDirection("werewolf", "east");
 
         yield return new WaitForSeconds(1f);
-        PickUpObject("werewolf", "hammer");
+        PickUpObject("werewolf", "shovel");
 
         yield return new WaitForSeconds(1f);
         MoveCharacterAlongDirection("werewolf", "west");
 
         yield return new WaitForSeconds(1f);
-        UseObject("werewolf", "hammer");
+        UseObject("werewolf", "shovel");
 
         yield return new WaitForSeconds(1f);
         MoveCharacterAlongDirection("werewolf", "north");

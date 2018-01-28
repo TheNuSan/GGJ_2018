@@ -42,31 +42,142 @@ public class InterpretError : MonoBehaviour {
     }
 
     public void TooFewWords() {
-        //Debug.Log("ERROR : Too few words.");
-        MessageText.text = "Please, speak more words, master wizard.";
+        int r = Random.Range(0, 8);
+
+        switch (r)
+        {
+            case 0:
+                MessageText.text = "DWARF : Well you have to tell us more, right?";
+                break;
+
+            case 1:
+                MessageText.text = "ELF : Please, speak more words, master wizard.";
+                break;
+
+            case 2:
+                MessageText.text = "VAMPIRE : Speak up, wizard, we are listening.";
+                break;
+
+            case 3:
+            default:
+                MessageText.text = "WEREWOLF : What is your command, masterrr?";
+                break;
+        }
     }
 
     public void SyntaxError(string word) {
-        //Debug.Log("ERROR : Word " + word + " is unknown.");
-        //MessageText.text = "Sorry, we don't know what \"" + word + "\" means";
-        MessageText.text = "What, does \"" + word + "\" mean?";
+        int r = Random.Range(0, 4);
+
+        switch (r)
+        {
+            case 0:
+                MessageText.text = "DWARF : Why did you say \"" + word + "\"?";
+                break;
+
+            case 1:
+                MessageText.text = "ELF : I don't understand the meaning of \"" + word + "\" in this context.";
+                break;
+
+            case 2:
+                MessageText.text = "VAMPIRE : Is the word \"" + word + "\" part of a riddle?";
+                break;
+
+            case 3:
+            default:
+                MessageText.text = "WEREWOLF : I don't underrrstand \"" + word + "\" , masterrr.";
+                break;
+        }
     }
 
     public void MeaningError(List<string> word_list)
     {
         string sentence = "";
-        
+        int r = Random.Range(0, 8);
+
         foreach (string s in word_list)
         {
             sentence += " " + s;
         }
 
-        //switch (Random.Range(0, 4))
+        switch (r) {
+            case 0:
+                MessageText.text = "DWARF : What's with this nonsense? Are you alright?";
+                break;
+            case 1:
+                MessageText.text = "DWARF : This does not mean anything. Get a grip!";
+                break;
 
-        //Debug.Log("ERROR : The sentence \"" + sentence + "\" has no meaning.");
-        //MessageText.text = "Sorry, we don't understand, what did you mean?";
-        MessageText.text = "This doesn't make any sense. Are you alright?";
+            case 2:
+                MessageText.text = "ELF : We haven't understood. What did you mean?";
+                break;
+            case 3:
+                MessageText.text = "ELF : Could you rephrase, master wizard?";
+                break;
+
+            case 4:
+                MessageText.text = "VAMPIRE : It seems you have messed up your words, wizard.";
+                break;
+
+            case 5:
+                MessageText.text = "VAMPIRE : And what would be the meaning of this?";
+                break;
+
+            case 6:
+                MessageText.text = "WEREWOLF : I don't underrrstand, masterrr.";
+                break;
+
+            case 7:
+            default:
+                MessageText.text = "WEREWOLF : Sorrrrry, I don't underrrstand!";
+                break;
+        }
     }
+
+    public void InconsistentDirection(string character, string thing) {
+        switch (character.ToLower())
+        {
+            case "dwarf":
+                MessageText.text = character.ToUpper() + ": What? \"" + thing + "\" is not even a direction!";
+                break;
+
+            case "elf":
+                MessageText.text = character.ToUpper() + ": I can't go to direction \"" + thing + "\".";
+                break;
+
+            case "vampire":
+                MessageText.text = character.ToUpper() + ": I believe \"" + thing + "\" is not the way.";
+                break;
+
+            case "werewolf":
+            default:
+                MessageText.text = character.ToUpper() + ": Growl... Which way is \"" + thing + "\"?";
+                break;
+        }
+    }
+
+    public void InconsistentAction(string character, string thing)
+    {
+        switch (character.ToLower())
+        {
+            case "dwarf":
+                MessageText.text = character.ToUpper() + ": What? \"" + thing + "\" is not an object I use!";
+                break;
+
+            case "elf":
+                MessageText.text = character.ToUpper() + ": I'm afraid it is not possible to grab \"" + thing + "\".";
+                break;
+
+            case "vampire":
+                MessageText.text = character.ToUpper() + ": It is not like I had \"" + thing + "\" within grasp.";
+                break;
+
+            case "werewolf":
+            default:
+                MessageText.text = character.ToUpper() + ": Growl. I can't do anything with \"" + thing + "\".";
+                break;
+        }
+    }
+
 
     public void MoveError(string character, string direction)
     {
@@ -86,7 +197,77 @@ public class InterpretError : MonoBehaviour {
 
             case "werewolf":
             default:
-                MessageText.text = character.ToUpper() + ": the path is blocked on the " + direction + ".";
+                MessageText.text = character.ToUpper() + ": Growl. The path is blocked on the " + direction + ".";
+                break;
+        }
+    }
+
+    public void NoObject(string character, string thing)
+    {
+        switch (character.ToLower())
+        {
+            case "dwarf":
+                MessageText.text = character.ToUpper() + ": There is no " + thing + " here.";
+                break;
+
+            case "elf":
+                MessageText.text = character.ToUpper() + ": Sorry, I can't find the " + thing + ".";
+                break;
+
+            case "vampire":
+                MessageText.text = character.ToUpper() + ": I would gladly have picked the " + thing + " up if it was there.";
+                break;
+
+            case "werewolf":
+            default:
+                MessageText.text = character.ToUpper() + ": Growl! Which " + thing + "? Where?";
+                break;
+        }
+    }
+
+    public void NoPosess(string character, string thing)
+    {
+        switch (character.ToLower())
+        {
+            case "dwarf":
+                MessageText.text = character.ToUpper() + ": I don't have a " + thing + "!";
+                break;
+
+            case "elf":
+                MessageText.text = character.ToUpper() + ": The " + thing + " is not in my posession.";
+                break;
+
+            case "vampire":
+                MessageText.text = character.ToUpper() + ": I whish I had the " + thing + ". It is not the case.";
+                break;
+
+            case "werewolf":
+            default:
+                MessageText.text = character.ToUpper() + ": Which " + thing + "? I don't have it!";
+                break;
+        }
+    }
+
+
+    public void NoUse(string character, string thing)
+    {
+        switch (character.ToLower())
+        {
+            case "dwarf":
+                MessageText.text = character.ToUpper() + ": I can't use the " + thing + "!";
+                break;
+
+            case "elf":
+                MessageText.text = character.ToUpper() + ": It is not possible for me to use the " + thing + ".";
+                break;
+
+            case "vampire":
+                MessageText.text = character.ToUpper() + ": The " + thing + " you said? I'm not entitled to do this.";
+                break;
+
+            case "werewolf":
+            default:
+                MessageText.text = character.ToUpper() + ": What would I do with a " + thing + " here?";
                 break;
         }
     }
