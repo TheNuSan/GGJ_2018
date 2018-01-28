@@ -27,6 +27,7 @@ public class MotionSystem : MonoBehaviour {
 
     bool NeedAfterMotionCheck = false;
     float MotionTimer = -1.0f;
+    public float StartLevelTimer;
 
     bool IsFailedMission;
     bool IsSuccesMission;
@@ -48,6 +49,7 @@ public class MotionSystem : MonoBehaviour {
         for( int i=0; i<KeyList.Length; ++i) {
             AllKeys.Add(KeyList[i].GetComponent<KeyObject>());
         }
+        StartLevelTimer = 3.0f;
         InitLevel();
     }
 
@@ -533,14 +535,23 @@ public class MotionSystem : MonoBehaviour {
     }    
 
     public void GetCamPos(ref Vector3 RefPosition, ref Vector3 RefSize) {
-        
-        Bounds Boun = new Bounds();
+
+
+        Bounds Boun = new Bounds(RefPosition, RefSize);
         for (int i = 0; i < Characters.Count; ++i) {
             Character Char = Characters[i];
             Boun.Encapsulate(Char.GetMotionLocation());
         }
 
-        RefPosition = Boun.center;
+        Vector3 CharCenter = Boun.center;
+
+        if (EndingRoom && StartLevelTimer > 0.0f) {
+            float Alpha = Mathf.Clamp01(StartLevelTimer / 3.0f);
+            RefPosition = Vector3.Lerp(RefPosition, EndingRoom.transform.position, Alpha);
+        } else {
+            RefPosition = CharCenter;
+        }
+                
         RefSize = Boun.size;
     }
 
@@ -553,6 +564,9 @@ public class MotionSystem : MonoBehaviour {
                 FinishTurn();
                 NeedAfterMotionCheck = false;
             }
+        }
+        if(StartLevelTimer>0.0f) {
+            StartLevelTimer -= Time.deltaTime;
         }
 	}
 
