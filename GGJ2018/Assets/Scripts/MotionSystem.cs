@@ -13,6 +13,8 @@ public class MotionSystem : MonoBehaviour {
     Vector3 RoomOffset = new Vector3(2.0f, 2.0f, 0.0f);
     Vector3 CharacHeight = new Vector3(0.0f, 0.0f, -1.0f);
 
+    public List<GameObject> ObstaclePrefabs;
+    
     public int LevelSizeX = 4;
     public int LevelSizeY = 4;
     
@@ -111,9 +113,34 @@ public class MotionSystem : MonoBehaviour {
                     EndingRoom = Room;
                 }
 
+                for (int d=0; d<Room.Doors.Count; ++d) {
+                    ObstacleDoor CurDoor = Room.Doors[d];
+                    GameObject RoomObj = null;
+                    if(d<Room.DoorsObjects.Count) {
+                        if(Room.DoorsObjects[d]) {
+                            RoomObj = Room.DoorsObjects[d];
+                        }
+                    }
+                    if (!RoomObj) {
+                        int PrefabIndex = (int)CurDoor.Type;
+                        if (PrefabIndex < ObstaclePrefabs.Count) {
+                            GameObject ObsPrefab = ObstaclePrefabs[PrefabIndex];
+                            RoomObj = GameObject.Instantiate(ObsPrefab);
+                            Room.DoorsObjects.Add(RoomObj);
+                        }
+                    }
+                    if(RoomObj) {
+                        RoomObj.transform.position = new Vector3();
+                    }
+                }
+
                 Rooms[Room.PosX][Room.PosY] = Room;
             }
         }
+
+        /*Vector3 GetObstacleOffset(MotionDirection Dir) {
+            if()
+        }*/
 
         GameObject[] KeyList = GameObject.FindGameObjectsWithTag("KeyObject");
         for (int i = 0; i < KeyList.Length; ++i) {
@@ -136,7 +163,7 @@ public class MotionSystem : MonoBehaviour {
                     Debug.LogError("Key no room " + Key.name);
                     continue;
                 }
-
+                
                 Key.OwnerRoom = OwnerRoom;
                 OwnerRoom.Keys.Add(Key);
             }
@@ -196,10 +223,10 @@ public class MotionSystem : MonoBehaviour {
         PickUpObject("ELF", "key");
 
         yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("Dwarf", "North");
+        MoveCharacterAlongDirection("ELF", "north");
 
         yield return new WaitForSeconds(1f);
-        MoveCharacterAlongDirection("ELF", "north");
+        MoveCharacterAlongDirection("Dwarf", "North");
 
         /*
 

@@ -22,6 +22,7 @@ public class BasicRoom : MonoBehaviour {
     public List<KeyObject> Keys;
 
     public List<ObstacleDoor> Doors;
+    public List<GameObject> DoorsObjects;
 
     //public Dictionary<MotionDirection, Obstacle> Obstacles = new Dictionary<MotionDirection, Obstacle>();
 
